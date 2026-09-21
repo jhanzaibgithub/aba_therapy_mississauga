@@ -1,0 +1,760 @@
+{
+  "site": {
+    "brand_name": "ABA THERAPY",
+    "brand_subtitle": "MISSISSAUGA",
+    "location": "Mississauga, Ontario",
+    "reference_note": "Content transcribed from the provided landing-page design."
+  },
+  "navigation": [
+    {
+      "label": "Home",
+      "slug": "home",
+      "href": "home"
+    },
+    {
+      "label": "About",
+      "slug": "about",
+      "href": "about"
+    },
+    {
+      "label": "Services",
+      "slug": "services",
+      "href": "services"
+    },
+    {
+      "label": "Our Approach",
+      "slug": "our-approach",
+      "href": "our-approach"
+    },
+    {
+      "label": "Resources",
+      "slug": "resources",
+      "href": "resources"
+    },
+    {
+      "label": "Contact",
+      "slug": "contact",
+      "href": "contact"
+    }
+  ],
+  "global_ctas": {
+    "primary": "Book a Consultation",
+    "secondary": "Explore Our Approach",
+    "phone_label": "Call (905) 123-4567",
+    "phone_href": "tel:+19051234567"
+  },
+  "hero": {
+    "eyebrow": "COMPASSIONATE. PERSONALIZED. PURPOSEFUL.",
+    "title": "Helping children grow with confidence.",
+    "description": "Individualized ABA therapy designed around your child, your family, and everyday life.",
+    "trust_text": "Trusted by families across Mississauga and surrounding communities.",
+    "support_card": {
+      "title": "We're here to support your child's unique journey."
+    }
+  },
+  "approach": {
+    "eyebrow": "OUR APPROACH",
+    "title": "Every child. Unique potential. Limitless possibilities.",
+    "description": "We focus on building meaningful skills that help children communicate, connect, learn, and thrive in the real world.",
+    "pillars": [
+      {
+        "number": "01",
+        "title": "Communication",
+        "description": "Building expressive and receptive communication in everyday life."
+      },
+      {
+        "number": "02",
+        "title": "Social Skills",
+        "description": "Helping children connect, share and build positive relationships."
+      },
+      {
+        "number": "03",
+        "title": "Daily Living Skills",
+        "description": "Supporting independence in routines and daily activities."
+      }
+    ],
+    "benefit_strip": [
+      {
+        "title": "Individualized Plans",
+        "description": "Designed around your child's strengths and needs."
+      },
+      {
+        "title": "Family Involved",
+        "description": "Parents are important partners in the process."
+      },
+      {
+        "title": "Evidence-Informed",
+        "description": "Strategies backed by training and experience."
+      },
+      {
+        "title": "Progress Focused",
+        "description": "Regular reviews to track growth and adjust goals."
+      }
+    ]
+  },
+  "services": {
+    "eyebrow": "OUR SERVICES",
+    "title": "Support that fits your child and your family.",
+    "cta": "View All Services",
+    "items": [
+      {
+        "slug": "in-home-therapy",
+        "title": "In-Home Therapy",
+        "description": "Therapy in the comfort of your home where learning happens naturally.",
+        "link_label": "Learn more"
+      },
+      {
+        "slug": "parent-coaching",
+        "title": "Parent Coaching",
+        "description": "Practical strategies and guidance for everyday routines.",
+        "link_label": "Learn more"
+      },
+      {
+        "slug": "early-intervention",
+        "title": "Early Intervention",
+        "description": "Early support can make a meaningful difference in your child's development.",
+        "link_label": "Learn more"
+      },
+      {
+        "slug": "school-support",
+        "title": "School & Daycare Support",
+        "description": "Helping children succeed across learning environments.",
+        "link_label": "Learn more"
+      }
+    ]
+  },
+  "family_fit": {
+    "eyebrow": "BUILT AROUND YOUR CHILD",
+    "title": "Therapy should fit your child, not the other way around.",
+    "description": "We take time to understand your child's strengths, challenges and goals so we can create a plan that feels right for your family."
+  },
+  "how_it_works": {
+    "eyebrow": "HOW IT WORKS",
+    "title": "A simple path to meaningful progress.",
+    "steps": [
+      {
+        "number": "01",
+        "title": "Let's Connect",
+        "description": "We learn about your child and what you hope to achieve."
+      },
+      {
+        "number": "02",
+        "title": "Assessment",
+        "description": "We get to know your child and identify strengths, needs and goals."
+      },
+      {
+        "number": "03",
+        "title": "Personalized Plan",
+        "description": "We create a plan with clear goals and strategies for success."
+      },
+      {
+        "number": "04",
+        "title": "Start & Grow",
+        "description": "Therapy begins with ongoing support, coaching and progress tracking."
+      }
+    ]
+  },
+  "resources": {
+    "eyebrow": "RESOURCES FOR PARENTS",
+    "title": "Helpful information for your family.",
+    "cta": "Visit Our Resources",
+    "items": [
+      {
+        "title": "Understanding ABA",
+        "description": "Learn what ABA therapy is, how it works and what to expect."
+      },
+      {
+        "title": "Getting Started",
+        "description": "Steps to take and what to expect during your first consultation."
+      },
+      {
+        "title": "Funding & Support",
+        "description": "Information on funding options and community resources."
+      }
+    ]
+  },
+  "local_area": {
+    "eyebrow": "WHAT FAMILIES SAY",
+    "title": "Proudly serving Mississauga and surrounding areas.",
+    "description": "Local care from a team that understands the needs of our community.",
+    "areas": [
+      "Mississauga",
+      "Brampton",
+      "Oakville",
+      "Milton",
+      "Etobicoke",
+      "& nearby areas"
+    ],
+    "testimonial": {
+      "quote": "The team at ABA Therapy Mississauga has been incredible. They truly care about our child and celebrate every small success with us.",
+      "attribution": "- Parent of a Client",
+      "rating": 5
+    },
+    "map_card": {
+      "title": "ABA Therapy Mississauga",
+      "description": "Compassionate ABA therapy close to home."
+    }
+  },
+  "faq": {
+    "eyebrow": "FREQUENTLY ASKED QUESTIONS",
+    "title": "Answers to common questions.",
+    "view_all_label": "View all FAQs",
+    "items": [
+      {
+        "question": "What is ABA therapy?",
+        "answer": "Applied Behavior Analysis (ABA) is an evidence-based therapy that focuses on understanding and improving human behavior, communication, social skills, learning, and daily living skills."
+      },
+      {
+        "question": "Who can benefit from ABA therapy?",
+        "answer": "ABA therapy is beneficial for children and youth with Autism Spectrum Disorder (ASD), developmental delays, or communication and behavioral challenges, helping them build lifelong independence."
+      },
+      {
+        "question": "Where does therapy take place?",
+        "answer": "We provide therapy in natural, everyday environments including your home, daycare, school, or community settings in Mississauga and surrounding regions."
+      },
+      {
+        "question": "How do I get started?",
+        "answer": "Getting started is simple! Reach out to schedule a free initial consultation where we discuss your child's needs and answer any questions you have."
+      },
+      {
+        "question": "How involved are parents?",
+        "answer": "Parents are vital partners in our therapy process. We offer dedicated parent coaching and regular updates so you can reinforce positive skills at home."
+      },
+      {
+        "question": "How is progress measured?",
+        "answer": "We track progress through continuous data collection and objective milestone evaluations, holding regular review meetings with parents to adapt goals."
+      }
+    ]
+  },
+  "final_cta": {
+    "title": "Ready to take the next step?",
+    "description": "We're here to help your child grow, learn and thrive.",
+    "primary": "Book a Consultation",
+    "secondary": "Call (905) 123-4567"
+  },
+  "footer": {
+    "brand_description": "Compassionate, individualized ABA therapy helping children grow, learn and thrive.",
+    "quick_links": [
+      "About",
+      "Services",
+      "Our Approach",
+      "Resources",
+      "Contact"
+    ],
+    "services": [
+      {
+        "title": "In-Home Therapy",
+        "slug": "in-home-therapy"
+      },
+      {
+        "title": "Parent Coaching",
+        "slug": "parent-coaching"
+      },
+      {
+        "title": "Early Intervention",
+        "slug": "early-intervention"
+      },
+      {
+        "title": "School & Daycare Support",
+        "slug": "school-support"
+      },
+      {
+        "title": "Verbal Support",
+        "slug": "verbal-support"
+      },
+      {
+        "title": "Assessments",
+        "slug": "assessments"
+      }
+    ],
+    "contact": {
+      "location": "Mississauga, Ontario",
+      "phone": "(905) 123-4567",
+      "email": "info@aba-therapy-mississauga.ca"
+    },
+    "legal": {
+      "copyright": "© 2026 ABA Therapy Mississauga. All rights reserved.",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use"
+    }
+  },
+  "media": {
+    "note": "All rounded/organic child-and-therapist photographs, service photos, icons, and map graphic.",
+    "assets": {
+      "logo": "assets/logo.svg",
+      "hero_image": "assets/hero-child-therapist.jpg",
+      "approach_image": "assets/approach-child-therapist.jpg",
+      "family_fit_image": "assets/family-fit-child-therapist.jpg",
+      "service_in_home": "assets/service-in-home.jpg",
+      "service_parent_coaching": "assets/service-parent-coaching.jpg",
+      "service_early_intervention": "assets/service-early-intervention.jpg",
+      "service_school_support": "assets/service-school-support.jpg",
+      "service_verbal_support": "assets/approach-child-therapist.jpg",
+      "service_assessments": "assets/family-fit-child-therapist.jpg",
+      "resource_understanding_aba": "assets/resource-understanding-aba.jpg",
+      "resource_getting_started": "assets/resource-getting-started.jpg",
+      "resource_funding": "assets/resource-funding.jpg",
+      "map": "assets/mississauga-map.jpg"
+    }
+  },
+  "services_catalog": [
+    {
+      "slug": "in-home-therapy",
+      "title": "In-Home Therapy",
+      "short_title": "In-Home ABA",
+      "description": "Therapy in the comfort of your home where learning happens naturally.",
+      "image_key": "service_in_home",
+      "icon": "home",
+      "accent": "purple",
+      "overview": "In-Home ABA Therapy brings evidence-based behavioral intervention directly into your child's most familiar, comfortable environment. By delivering therapy where your child eats, plays, and relaxes, our clinical team targets real-life skills that translate immediately into calmer daily routines.",
+      "what_is_it": "Our in-home therapy program is built around your family's authentic lifestyle. Rather than teaching skills in an artificial clinic room, our Board Certified Behavior Analysts (BCBAs) and Instructor Therapists embed learning opportunities into morning preparation, meal times, sibling play, and bedtime routines. This naturalistic approach eliminates the stress of clinical commutes and ensures that newly acquired behaviors stick.",
+      "highlight": "93% of families report significant reductions in daily transition anxiety within the first 60 days of in-home support.",
+      "benefits": [
+        {
+          "title": "Natural Environment Learning",
+          "description": "Skills taught directly in the child's living space transfer naturally without needing clinic-to-home adaptation."
+        },
+        {
+          "title": "Active Family Coaching",
+          "description": "Parents and caregivers observe real-time strategies, learning how to reinforce positive behaviors during everyday routines."
+        },
+        {
+          "title": "Targeted Household Routines",
+          "description": "Addresses specific home challenges including mealtime flexibility, dressing independently, and sibling interactions."
+        },
+        {
+          "title": "Reduced Sensory & Travel Stress",
+          "description": "Eliminates stressful car rides and transition meltdowns, keeping your child relaxed and receptive to learning."
+        }
+      ],
+      "process": [
+        {
+          "number": "01",
+          "title": "In-Home Ecological Assessment",
+          "description": "Our BCBA spends time observing your child in their natural setting, identifying triggers, strengths, and family priorities."
+        },
+        {
+          "number": "02",
+          "title": "Customized Behavior Plan (BSP)",
+          "description": "We establish meaningful functional goals tailored to your child's age, communication level, and household routine."
+        },
+        {
+          "number": "03",
+          "title": "1-on-1 Direct Therapy Sessions",
+          "description": "Fun, engaging, play-infused therapy sessions delivered right in your home by our compassionate, certified therapists."
+        },
+        {
+          "number": "04",
+          "title": "Ongoing Data Tracking & Parent Guidance",
+          "description": "Continuous objective measurement with bi-weekly check-ins to adapt goals as your child progresses."
+        }
+      ],
+      "who_is_for": "Children with Autism Spectrum Disorder (ASD), developmental delays, or behavioral challenges who thrive best in their home environment, and families seeking direct guidance within their daily routines.",
+      "faqs": [
+        {
+          "question": "How many hours per week of in-home therapy are recommended?",
+          "answer": "Intensity ranges from 6 to 20 hours per week depending on clinical recommendations from the initial assessment and your family's scheduling goals."
+        },
+        {
+          "question": "Do parents need to be in the room the entire session?",
+          "answer": "Parents do not need to sit through every single minute, but active participation during caregiver coaching windows is vital to sustainable progress."
+        },
+        {
+          "question": "What areas in the GTA do you travel to?",
+          "answer": "Our in-home clinical team serves Mississauga, Brampton, Oakville, Milton, Etobicoke, and adjacent Peel and Halton communities."
+        }
+      ]
+    },
+    {
+      "slug": "parent-coaching",
+      "title": "Parent Coaching & Training",
+      "short_title": "Parent Coaching",
+      "description": "Practical strategies, emotional support, and guidance for everyday routines.",
+      "image_key": "service_parent_coaching",
+      "icon": "people",
+      "accent": "teal",
+      "overview": "Parent coaching empowers you with the practical knowledge, tools, and confidence to guide your child through difficult moments and celebrate developmental milestones together. We transform daily friction into opportunities for connection.",
+      "what_is_it": "Parent coaching is not about judging your parenting; it is about partnering with a behavioral expert who understands child development. We translate evidence-based behavioral principles into bite-sized, practical techniques you can use during supermarket visits, morning dressing routines, and bedtime.",
+      "highlight": "Empowering parents creates lasting behavioral consistency that continues long after formal therapy hours end.",
+      "benefits": [
+        {
+          "title": "Empowered Caregivers",
+          "description": "Replace uncertainty with clear, proactive behavioral responses that de-escalate frustration and promote calm."
+        },
+        {
+          "title": "Consistent Family Routines",
+          "description": "Ensure siblings, parents, and caregivers are aligned with consistent positive reinforcement strategies."
+        },
+        {
+          "title": "Strengthened Bond",
+          "description": "Foster deeper trust and joyful communication between you and your child through positive behavioral interaction."
+        },
+        {
+          "title": "Flexible Scheduling",
+          "description": "Convenient sessions offered in-person at your home or virtually via secure telehealth."
+        }
+      ],
+      "process": [
+        {
+          "number": "01",
+          "title": "Routine & Priority Discovery",
+          "description": "We identify your family's biggest daily pain points — whether it's leaving the house, tantrums, or bedtime struggles."
+        },
+        {
+          "number": "02",
+          "title": "Actionable Strategy Playbook",
+          "description": "Your BCBA develops a straightforward, easy-to-implement strategy guide with visual schedules and reinforcement plans."
+        },
+        {
+          "number": "03",
+          "title": "Live Guided Practice",
+          "description": "We model techniques alongside you during actual family routines, offering immediate feedback and gentle encouragement."
+        },
+        {
+          "number": "04",
+          "title": "Review & Celebration",
+          "description": "Regular check-ins to review progress, troubleshoot emerging challenges, and celebrate wins as a family unit."
+        }
+      ],
+      "who_is_for": "Parents and primary caregivers of children with autism, ADHD, or developmental delays who want effective, positive tools to navigate daily routines with peace and confidence.",
+      "faqs": [
+        {
+          "question": "Is parent coaching eligible for Ontario Autism Program (OAP) funding?",
+          "answer": "Yes, parent coaching and caregiver-mediated training are fully eligible under OAP core clinical services and foundational services."
+        },
+        {
+          "question": "Can grandparents and babysitters participate?",
+          "answer": "Yes! We strongly encourage all key adults in your child's daily circle to participate so strategies remain consistent across caregivers."
+        },
+        {
+          "question": "Are sessions available in the evening or on weekends?",
+          "answer": "We offer flexible scheduling including early evenings and weekend slots to accommodate working parents."
+        }
+      ]
+    },
+    {
+      "slug": "early-intervention",
+      "title": "Early Intervention ABA",
+      "short_title": "Early Intervention",
+      "description": "Early support can make a meaningful, lasting difference in your child's development.",
+      "image_key": "service_early_intervention",
+      "icon": "growth",
+      "accent": "lime",
+      "overview": "Research consistently proves that the earliest years of childhood (ages 1.5 to 6) represent the most critical developmental window. Our play-based Early Intervention program nurtures essential communication, cognitive, and social milestones through joyful exploration.",
+      "what_is_it": "Our Early Intervention program implements Naturalistic Developmental Behavioral Interventions (NDBI). Instead of rigid drills, learning is seamlessly embedded into creative play, music, sensory activities, and interactive games. We follow your child's lead, turning their natural curiosity into a powerful engine for developmental growth.",
+      "highlight": "Early childhood neuroplasticity makes early intervention the single most effective investment in long-term independence.",
+      "benefits": [
+        {
+          "title": "Maximize Brain Neuroplasticity",
+          "description": "Capitalizes on rapid early brain development to establish strong neural pathways for language and learning."
+        },
+        {
+          "title": "Play-Based & Child-Centered",
+          "description": "Therapy feels like play, ensuring children stay joyful, engaged, and eager to participate in every session."
+        },
+        {
+          "title": "School Readiness Foundation",
+          "description": "Builds fundamental classroom skills: following group instructions, circle time focus, turn-taking, and sharing."
+        },
+        {
+          "title": "Early Expressive Communication",
+          "description": "Develops functional speech, gestures, and picture communication before maladaptive behaviors become ingrained."
+        }
+      ],
+      "process": [
+        {
+          "number": "01",
+          "title": "Developmental Milestone Mapping",
+          "description": "We assess current language, motor, play, and self-help skills against standard early childhood developmental milestones."
+        },
+        {
+          "number": "02",
+          "title": "Joyful Play Curriculum",
+          "description": "We design personalized learning targets wrapped around your toddler's favorite toys, characters, and interests."
+        },
+        {
+          "number": "03",
+          "title": "Interactive 1-on-1 Sessions",
+          "description": "Sessions filled with song, sensory exploration, and guided play led by our caring, patient therapists."
+        },
+        {
+          "number": "04",
+          "title": "Preschool & Kindergarten Transition",
+          "description": "Dedicated transition planning to ensure your child enters structured school environments with confidence."
+        }
+      ],
+      "who_is_for": "Toddlers and young children aged 18 months to 6 years with an autism diagnosis, speech delay, or emerging social-communication challenges.",
+      "faqs": [
+        {
+          "question": "Does my child need an official diagnosis to begin?",
+          "answer": "No official medical diagnosis is required to begin early intervention. We can start support immediately based on developmental needs."
+        },
+        {
+          "question": "How does early intervention differ from standard preschool?",
+          "answer": "Unlike a general classroom, our program provides focused 1-on-1 clinical support specifically targeting developmental milestone gaps with measured data."
+        },
+        {
+          "question": "Can early intervention happen at our home?",
+          "answer": "Yes, early intervention is available in your home, at our clinic, or integrated directly into your child's licensed daycare center."
+        }
+      ]
+    },
+    {
+      "slug": "school-support",
+      "title": "School & Daycare Support",
+      "short_title": "School Support",
+      "description": "Helping children succeed across classrooms, playgrounds, and learning environments.",
+      "image_key": "service_school_support",
+      "icon": "book",
+      "accent": "purple",
+      "overview": "Classrooms and daycare centers present complex sensory environments and social demands. Our school and daycare support bridges the gap between clinical behavioral goals and classroom success, helping your child participate, learn, and make friends.",
+      "what_is_it": "Our experienced therapists collaborate with educators, educational assistants (EAs), and school administrators to implement individualized behavior support plans. We provide discrete prompting, transition assistance, and peer facilitation while fostering your child's growing independence.",
+      "highlight": "We work collaboratively with educators across Peel District and Dufferin-Peel Catholic school boards to champion your child's academic and social journey.",
+      "benefits": [
+        {
+          "title": "Classroom Task Engagement",
+          "description": "Helps your child follow instructional routines, stay seated, and engage with learning materials alongside peers."
+        },
+        {
+          "title": "Peer Social Facilitation",
+          "description": "Guides natural social interactions on the playground, lunch table, and during collaborative group projects."
+        },
+        {
+          "title": "Smooth Daily Transitions",
+          "description": "Prepares and supports students moving between classes, recess, gym, and structured learning times."
+        },
+        {
+          "title": "Educator Partnership",
+          "description": "Supplies teachers with practical behavioral accommodation tips that integrate seamlessly into classroom routines."
+        }
+      ],
+      "process": [
+        {
+          "number": "01",
+          "title": "Classroom Environmental Observation",
+          "description": "We observe your child during regular school routines to identify sensory triggers and social interaction barriers."
+        },
+        {
+          "number": "02",
+          "title": "Educator & IEP Collaboration",
+          "description": "We meet with teachers and administration to align therapy goals with Individual Education Plan (IEP) targets."
+        },
+        {
+          "number": "03",
+          "title": "In-Class Shadowing & Prompting",
+          "description": "Therapist provides discrete support in class, encouraging direct student-teacher and student-peer relationships."
+        },
+        {
+          "number": "04",
+          "title": "Systematic Independence Fading",
+          "description": "Prompting is systematically faded as the student masters self-advocacy and independent classroom navigation."
+        }
+      ],
+      "who_is_for": "Preschool, elementary, and middle school students who experience difficulty with classroom focus, sensory overload, social peer interaction, or school transitions.",
+      "faqs": [
+        {
+          "question": "Can your therapists come directly into public schools in Mississauga?",
+          "answer": "Yes, with school board approval and parental consent under Ontario school visitor and third-party professional protocols."
+        },
+        {
+          "question": "Will having a therapist make my child feel singled out?",
+          "answer": "Our therapists operate with great discretion, often supporting the general classroom flow so your child feels natural and included."
+        },
+        {
+          "question": "Do you participate in school IEP meetings?",
+          "answer": "Yes, our clinical BCBAs regularly participate in IEP meetings and school case conferences to share data and advocate for your child."
+        }
+      ]
+    },
+    {
+      "slug": "verbal-support",
+      "title": "Verbal & Communication Support",
+      "short_title": "Verbal Support",
+      "description": "Building expressive, receptive, and functional communication in everyday life.",
+      "image_key": "approach_image",
+      "icon": "chat",
+      "accent": "teal",
+      "overview": "Communication is fundamental to human dignity and happiness. When children struggle to express their wants, needs, and thoughts, frustration often appears as challenging behavior. Our verbal behavior program gives every child their voice.",
+      "what_is_it": "Our Verbal Behavior (VB) approach evaluates the functional purpose of communication. Using positive reinforcement, we teach functional requesting (Manding), labeling objects (Tacting), answering questions (Intraverbals), and listening comprehension. For non-speaking children, we seamlessly integrate Augmentative and Alternative Communication (AAC), PECS, and speech-generating devices.",
+      "highlight": "Providing a child with a reliable way to communicate their needs leads to an immediate, dramatic drop in daily behavioral frustration.",
+      "benefits": [
+        {
+          "title": "Dramatically Less Frustration",
+          "description": "Reduces meltdowns and tantrums by giving children immediate, reliable ways to express what they need."
+        },
+        {
+          "title": "Multi-Modal Communication",
+          "description": "Supports vocal speech, picture exchange (PECS), American Sign Language (ASL), and iPad AAC applications (e.g. Proloquo2Go)."
+        },
+        {
+          "title": "Functional First Vocabulary",
+          "description": "Prioritizes words that give your child immediate agency: requesting water, breaks, toys, and expressing feelings."
+        },
+        {
+          "title": "Speech Therapy Collaboration",
+          "description": "Coordinates closely with Speech-Language Pathologists (SLPs) to multiply the benefits of speech therapy."
+        }
+      ],
+      "process": [
+        {
+          "number": "01",
+          "title": "Verbal Operant Assessment",
+          "description": "Comprehensive evaluation of expressive vocabulary, receptive comprehension, echoic ability, and non-verbal gestures."
+        },
+        {
+          "number": "02",
+          "title": "Modality Identification",
+          "description": "Selecting the most accessible, empowering communication medium — vocal, visual cards, or digital AAC speech tablets."
+        },
+        {
+          "number": "03",
+          "title": "High-Frequency Functional Practice",
+          "description": "Embedding dozens of natural communication opportunities across every hour of play and daily routine."
+        },
+        {
+          "number": "04",
+          "title": "Conversational Expansion",
+          "description": "Expanding from single-word requests to multi-word phrases, social commenting, and reciprocal conversation."
+        }
+      ],
+      "who_is_for": "Non-verbal, pre-verbal, or minimally speaking children, as well as children with speech apraxia, echolalia, or difficulty using speech functionally.",
+      "faqs": [
+        {
+          "question": "Will using an AAC device stop my child from developing spoken speech?",
+          "answer": "No. Extensive clinical research shows that AAC use actually promotes and accelerates natural vocal development by taking away the pressure."
+        },
+        {
+          "question": "How quickly can we see communication progress?",
+          "answer": "With consistent functional communication training (FCT), many children learn to make independent requests within the first 2 to 4 weeks."
+        },
+        {
+          "question": "Do you program speech apps on iPads?",
+          "answer": "Yes, our team configures customized vocabulary grids on leading apps including Proloquo2Go, TouchChat, and LAMP Words for Life."
+        }
+      ]
+    },
+    {
+      "slug": "assessments",
+      "title": "Comprehensive Developmental Assessments",
+      "short_title": "Assessments",
+      "description": "Evidence-based evaluations and clear clinical roadmaps for individualized progress.",
+      "image_key": "family_fit_image",
+      "icon": "clipboard",
+      "accent": "lime",
+      "overview": "Effective therapy begins with accurate understanding. Our comprehensive developmental and behavioral assessments establish an objective baseline of your child's skills, pinpointing exactly where to begin to achieve the greatest progress.",
+      "what_is_it": "Conducted by our experienced Board Certified Behavior Analysts (BCBAs), our evaluations utilize gold-standard clinical assessment tools including the VB-MAPP (Verbal Behavior Milestones Assessment and Placement Program), ABLLS-R, AFLS (Functional Living Skills), and Functional Behavior Assessments (FBA). The resulting reports satisfy all Ontario Autism Program (OAP) clinical documentation requirements.",
+      "highlight": "Clear, objective baseline milestone tracking ensures every hour of your child's therapy is directed toward high-impact goals.",
+      "benefits": [
+        {
+          "title": "Accurate Baseline Data",
+          "description": "Detailed milestone scoring across language, social, academic, play, and self-care developmental domains."
+        },
+        {
+          "title": "Tailored Individualized Plan",
+          "description": "Every single therapy goal is grounded directly in assessment findings rather than generic templates."
+        },
+        {
+          "title": "OAP Funding Compliance",
+          "description": "Formal clinical reports and treatment plans meeting all documentation standards for Ontario Autism Program funding."
+        },
+        {
+          "title": "Objective Progress Tracking",
+          "description": "Bi-annual milestone re-assessments that visually demonstrate your child's developmental growth over time."
+        }
+      ],
+      "process": [
+        {
+          "number": "01",
+          "title": "Caregiver Clinical Intake",
+          "description": "In-depth conversation reviewing developmental history, medical records, past evaluations, and family priorities."
+        },
+        {
+          "number": "02",
+          "title": "Direct Observational Assessment",
+          "description": "Engaging, low-stress assessment sessions where our BCBA evaluates milestone skills through interactive activities."
+        },
+        {
+          "number": "03",
+          "title": "Clinical Report & Milestone Grids",
+          "description": "Comprehensive written report with clear visual milestone grids, behavior interpretations, and recommendations."
+        },
+        {
+          "number": "04",
+          "title": "Results Conference & Next Steps",
+          "description": "Collaborative family meeting to walk through the findings step-by-step and design the therapy schedule together."
+        }
+      ],
+      "who_is_for": "Families needing an initial baseline assessment, an updated treatment plan for OAP funding allocation, or a Functional Behavior Assessment (FBA) to resolve challenging behaviors.",
+      "faqs": [
+        {
+          "question": "How long does the assessment process take?",
+          "answer": "Direct observation typically takes 3 to 6 hours divided across 2 to 3 comfortable sessions, followed by data synthesis and report delivery within 10 days."
+        },
+        {
+          "question": "Will the assessment be stressful for my child?",
+          "answer": "Not at all. We make the assessment feel like fun play, taking frequent sensory breaks and following your child's natural pace."
+        },
+        {
+          "question": "Can this report be shared with my pediatrician or school?",
+          "answer": "Yes, our comprehensive reports are formatted to be shared with pediatricians, school teams, and multidisciplinary specialists."
+        }
+      ]
+    }
+  ],
+  "pages": {
+    "about": {
+      "eyebrow": "ABOUT ABA THERAPY MISSISSAUGA",
+      "title": "Empowering children and families through compassionate care.",
+      "subtitle": "We believe every child possesses unique strengths, boundless potential, and the ability to thrive when surrounded by understanding and evidence-based support.",
+      "story": {
+        "title": "Our Story & Mission",
+        "p1": "Founded right here in Mississauga, our clinic was born from a simple belief: behavioral therapy should feel compassionate, joyful, and deeply personal. We recognized that families often faced impersonal, clinical environments that didn't reflect the warmth of real family life.",
+        "p2": "Our multidisciplinary team of Board Certified Behavior Analysts (BCBAs) and dedicated therapists work in close partnership with parents. By integrating therapy into home, school, and community environments, we ensure that every skill your child learns is meaningful, functional, and enduring."
+      },
+      "values": [
+        {
+          "title": "Compassion First",
+          "description": "We treat every child with deep respect, kindness, and understanding, honoring their individuality at every step."
+        },
+        {
+          "title": "Clinical Excellence",
+          "description": "Our interventions are rooted in empirical science, led by certified BCBAs, and continually updated through data."
+        },
+        {
+          "title": "Family Partnership",
+          "description": "Parents are never spectators in our care; you are our most valued partners in achieving lasting progress."
+        },
+        {
+          "title": "Celebrate Every Win",
+          "description": "From a first word to a peaceful transition, we celebrate every milestone on your child's unique journey."
+        }
+      ]
+    },
+    "services": {
+      "eyebrow": "COMPREHENSIVE SERVICES",
+      "title": "Evidence-based support tailored to your child's world.",
+      "subtitle": "Explore our full range of ABA therapy services designed to support communication, social connection, and daily living skills across every environment."
+    },
+    "our_approach": {
+      "eyebrow": "OUR CLINICAL PHILOSOPHY",
+      "title": "Every child. Unique potential. Limitless possibilities.",
+      "subtitle": "Discover our child-centered, naturalistic methodology that turns science into everyday smiles and life-changing milestones."
+    },
+    "resources": {
+      "eyebrow": "PARENT RESOURCE HUB",
+      "title": "Helpful information, guides & support for your family.",
+      "subtitle": "Access our curated checklists, funding guides, and expert articles designed to help Ontario families navigate autism and developmental care."
+    },
+    "contact": {
+      "eyebrow": "LET'S CONNECT",
+      "title": "Begin your child's journey with confidence.",
+      "subtitle": "Reach out today to schedule a free, no-obligation consultation with our clinical team in Mississauga.",
+      "office": {
+        "address": "Mississauga, Ontario (Serving Peel & Halton Regions)",
+        "phone": "(905) 123-4567",
+        "email": "info@aba-therapy-mississauga.ca",
+        "hours": "Monday – Friday: 8:00 AM – 6:30 PM | Saturday: 9:00 AM – 2:00 PM"
+      }
+    }
+  }
+}

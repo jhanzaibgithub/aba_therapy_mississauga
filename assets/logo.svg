@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" width="280" height="60">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d92d73"/>
+      <stop offset="30%" stop-color="#ff9e1b"/>
+      <stop offset="60%" stop-color="#b8dc22"/>
+      <stop offset="85%" stop-color="#09a6ad"/>
+      <stop offset="100%" stop-color="#59209b"/>
+    </linearGradient>
+  </defs>
+  <!-- Brand Mark Icon -->
+  <g transform="translate(5, 5)">
+    <path d="M25 4 C36 4 44 12 44 23 C44 34 35 44 25 44 C15 44 6 34 6 23 C6 12 14 4 25 4 Z" fill="url(#g1)"/>
+    <path d="M18 16 C22 10 32 10 34 18 C36 24 28 30 25 34 C22 30 14 24 16 18 Z" fill="#ffffff" opacity="0.9"/>
+    <circle cx="20" cy="18" r="3" fill="#ffc929"/>
+    <circle cx="30" cy="20" r="3.5" fill="#09a6ad"/>
+    <circle cx="24" cy="28" r="4" fill="#d92d73"/>
+  </g>
+  <!-- Text Brand -->
+  <text x="62" y="30" font-family="'Playfair Display', Georgia, serif" font-weight="700" font-size="20" fill="#59209b" letter-spacing="-0.5">ABA THERAPY</text>
+  <text x="63" y="44" font-family="'DM Sans', sans-serif" font-weight="700" font-size="9" fill="#187ab9" letter-spacing="3.5">MISSISSAUGA</text>
+  <line x1="63" y1="48" x2="200" y2="48" stroke="#09a6ad" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+</svg>
