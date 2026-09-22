@@ -184,12 +184,159 @@ function aba_enqueue_assets(): void {
 }
 add_action('wp_enqueue_scripts', 'aba_enqueue_assets');
 
-// Safely flush rewrite rules when theme is activated
+// Safely flush rewrite rules & automatically create pages when theme is activated
 add_action('after_switch_theme', function(): void {
+    aba_setup_pages_and_options(true);
     if (function_exists('flush_rewrite_rules')) {
         flush_rewrite_rules();
     }
 });
+
+// Auto-create pages on first admin visit if not yet created, or via button
+add_action('admin_init', function(): void {
+    if (isset($_GET['aba_create_pages']) && current_user_can('manage_options')) {
+        aba_setup_pages_and_options(true);
+        wp_safe_redirect(admin_url('edit.php?post_type=page&aba_created=1'));
+        exit;
+    }
+
+    if (!get_option('aba_pages_auto_created')) {
+        aba_setup_pages_and_options(false);
+    }
+});
+
+// Admin success notice
+add_action('admin_notices', function(): void {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+    if (isset($_GET['aba_created'])) {
+        echo '<div class="notice notice-success is-dismissible"><p><strong>ABA Therapy Mississauga:</strong> All website pages have been created and assigned successfully!</p></div>';
+    }
+});
+
+// Appearance -> Setup Theme Pages tool in WordPress Admin
+add_action('admin_menu', function(): void {
+    add_theme_page(
+        'Setup Theme Pages',
+        'Setup Theme Pages',
+        'manage_options',
+        'aba-setup-pages',
+        function(): void {
+            if (isset($_POST['aba_run_setup'])) {
+                check_admin_referer('aba_setup_pages_nonce');
+                aba_setup_pages_and_options(true);
+                echo '<div class="notice notice-success"><p><strong>Success!</strong> All 6 website pages (Home, About Us, Services, Our Approach, Resources, Contact) are created and assigned to their custom templates.</p></div>';
+            }
+            ?>
+            <div class="wrap">
+                <h1>ABA Therapy Mississauga - Automatic Page Setup</h1>
+                <p>This tool automatically creates all 6 website pages in your WordPress <strong>Pages</strong> menu, assigns their custom templates, sets the Home page as the Front Page, and configures clean URLs.</p>
+                <form method="post">
+                    <?php wp_nonce_field('aba_setup_pages_nonce'); ?>
+                    <input type="submit" name="aba_run_setup" class="button button-primary button-large" value="Generate / Update All Website Pages Now">
+                </form>
+            </div>
+            <?php
+        }
+    );
+});
+
+/**
+ * Automatically create all website pages and configure front page & permalinks in WordPress
+ */
+function aba_setup_pages_and_options(bool $force = false): void {
+    if (!function_exists('wp_insert_post') || !function_exists('get_page_by_path')) {
+        return;
+    }
+
+    $pages = [
+        'home' => [
+            'title'    => 'Home',
+            'slug'     => 'home',
+            'template' => 'front-page.php',
+        ],
+        'about' => [
+            'title'    => 'About Us',
+            'slug'     => 'about',
+            'template' => 'page-about.php',
+        ],
+        'services' => [
+            'title'    => 'Our Services',
+            'slug'     => 'services',
+            'template' => 'page-services.php',
+        ],
+        'our-approach' => [
+            'title'    => 'Our Approach',
+            'slug'     => 'our-approach',
+            'template' => 'page-our-approach.php',
+        ],
+        'resources' => [
+            'title'    => 'Parent Resources',
+            'slug'     => 'resources',
+            'template' => 'page-resources.php',
+        ],
+        'contact' => [
+            'title'    => 'Contact Us',
+            'slug'     => 'contact',
+            'template' => 'page-contact.php',
+        ],
+    ];
+
+    $home_id = 0;
+
+    foreach ($pages as $key => $p) {
+        $existing = get_page_by_path($p['slug']);
+        if (!$existing) {
+            $page_id = wp_insert_post([
+                'post_title'     => $p['title'],
+                'post_name'      => $p['slug'],
+                'post_status'    => 'publish',
+                'post_type'      => 'page',
+                'comment_status' => 'closed',
+                'ping_status'    => 'closed',
+                'post_content'   => '',
+            ]);
+            if ($page_id && !is_wp_error($page_id)) {
+                if (!empty($p['template'])) {
+                    update_post_meta($page_id, '_wp_page_template', $p['template']);
+                }
+                if ($key === 'home') {
+                    $home_id = $page_id;
+                }
+            }
+        } else {
+            if (!empty($p['template'])) {
+                update_post_meta($existing->ID, '_wp_page_template', $p['template']);
+            }
+            if ($key === 'home') {
+                $home_id = $existing->ID;
+            }
+        }
+    }
+
+    // Assign Static Front Page to Home
+    if ($home_id > 0) {
+        update_option('show_on_front', 'page');
+        update_option('page_on_front', $home_id);
+    }
+
+    // Ensure clean permalinks (Post name /%postname%/)
+    if (get_option('permalink_structure') !== '/%postname%/') {
+        global $wp_rewrite;
+        if (is_object($wp_rewrite)) {
+            $wp_rewrite->set_permalink_structure('/%postname%/');
+        } else {
+            update_option('permalink_structure', '/%postname%/');
+        }
+    }
+
+    if (function_exists('flush_rewrite_rules')) {
+        flush_rewrite_rules();
+    }
+
+    update_option('aba_pages_auto_created', '1');
+}
 
 // Register clean rewrite rules for single service pages in WordPress
 add_action('init', function(): void {
