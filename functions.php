@@ -286,7 +286,21 @@ function aba_setup_pages_and_options(bool $force = false): void {
     $home_id = 0;
 
     foreach ($pages as $key => $p) {
-        $existing = get_page_by_path($p['slug']);
+        $existing = null;
+        if (function_exists('get_page_by_path')) {
+            $existing = get_page_by_path($p['slug']);
+        }
+        if (!$existing && function_exists('get_posts')) {
+            $found = get_posts([
+                'post_type'   => 'page',
+                'name'        => $p['slug'],
+                'post_status' => 'any',
+                'numberposts' => 1,
+            ]);
+            if (!empty($found)) {
+                $existing = $found[0];
+            }
+        }
         if (!$existing) {
             $page_id = wp_insert_post([
                 'post_title'     => $p['title'],
