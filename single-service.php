@@ -6,7 +6,7 @@ $c = aba_load_content();
 get_header();
 
 $slug = $_GET['service'] ?? get_query_var('service_slug') ?? 'in-home-therapy';
-$slug = sanitize_title($slug);
+$slug = aba_sanitize_slug($slug);
 
 $all_services = aba_get_all_services();
 $service = aba_get_service($slug);

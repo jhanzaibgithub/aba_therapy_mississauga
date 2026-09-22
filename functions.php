@@ -1,155 +1,163 @@
 <?php
 // Fallback stubs for direct access outside WordPress (e.g. direct XAMPP browser preview)
-if (!function_exists('get_template_directory')) {
-    function get_template_directory(): string {
-        return __DIR__;
-    }
-}
-
-if (!function_exists('get_template_directory_uri')) {
-    function get_template_directory_uri(): string {
-        $script_name = $_SERVER['SCRIPT_NAME'] ?? '';
-        $dir = dirname($script_name);
-        return rtrim(str_replace('\\', '/', $dir), '/');
-    }
-}
-
-if (!function_exists('home_url')) {
-    function home_url(string $path = ''): string {
-        $uri = get_template_directory_uri();
-        return $uri . '/' . ltrim($path, '/');
-    }
-}
-
-if (!function_exists('add_theme_support')) {
-    function add_theme_support($feature, $options = null): void {}
-}
-
 if (!function_exists('add_action')) {
-    function add_action($hook, $callback): void {}
-}
-
-if (!function_exists('add_filter')) {
-    function add_filter($hook, $callback): void {}
-}
-
-if (!function_exists('add_rewrite_rule')) {
-    function add_rewrite_rule($regex, $query, $after = 'bottom'): void {}
-}
-
-if (!function_exists('add_rewrite_tag')) {
-    function add_rewrite_tag($tag, $regex): void {}
-}
-
-if (!function_exists('get_query_var')) {
-    function get_query_var($var, $default = '') {
-        return $_GET[$var] ?? $default;
-    }
-}
-
-if (!function_exists('wp_enqueue_style')) {
-    function wp_enqueue_style($handle, $src = '', $deps = [], $ver = false, $media = 'all'): void {}
-}
-
-if (!function_exists('wp_enqueue_script')) {
-    function wp_enqueue_script($handle, $src = '', $deps = [], $ver = false, $in_footer = false): void {}
-}
-
-if (!function_exists('esc_html')) {
-    function esc_html($text): string {
-        return htmlspecialchars((string)$text, ENT_QUOTES, 'UTF-8');
-    }
-}
-
-if (!function_exists('esc_attr')) {
-    function esc_attr($text): string {
-        return htmlspecialchars((string)$text, ENT_QUOTES, 'UTF-8');
-    }
-}
-
-if (!function_exists('esc_url')) {
-    function esc_url($url): string {
-        return htmlspecialchars((string)$url, ENT_QUOTES, 'UTF-8');
-    }
-}
-
-if (!function_exists('antispambot')) {
-    function antispambot($email): string {
-        return (string)$email;
-    }
-}
-
-if (!function_exists('current_user_can')) {
-    function current_user_can($capability): bool {
-        return true;
-    }
-}
-
-if (!function_exists('__')) {
-    function __($text, $domain = 'default'): string {
-        return (string)$text;
-    }
-}
-
-if (!function_exists('status_header')) {
-    function status_header($code): void {
-        http_response_code($code);
-    }
-}
-
-if (!function_exists('get_header')) {
-    function get_header($name = null): void {
-        require_once __DIR__ . '/header.php';
-    }
-}
-
-if (!function_exists('get_footer')) {
-    function get_footer($name = null): void {
-        require_once __DIR__ . '/footer.php';
-    }
-}
-
-if (!function_exists('language_attributes')) {
-    function language_attributes(): void {
-        echo 'lang="en-US"';
-    }
-}
-
-if (!function_exists('bloginfo')) {
-    function bloginfo($show = ''): void {
-        if ($show === 'charset') { echo 'UTF-8'; }
-    }
-}
-
-if (!function_exists('wp_head')) {
-    function wp_head(): void {
-        $uri = get_template_directory_uri();
-        echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
-        echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
-        echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">' . "\n";
-        echo '<link rel="stylesheet" href="' . esc_url($uri . '/assets/css/landing.css') . '">' . "\n";
-    }
-}
-
-if (!function_exists('body_class')) {
-    function body_class($class = ''): void {
-        $current = aba_get_current_page();
-        $classes = 'aba-body page-' . esc_attr($current);
-        if ($class) {
-            $classes .= ' ' . esc_attr($class);
+    if (!function_exists('get_template_directory')) {
+        function get_template_directory(): string {
+            return __DIR__;
         }
-        echo 'class="' . $classes . '"';
     }
-}
 
-if (!function_exists('wp_body_open')) {
-    function wp_body_open(): void {}
-}
+    if (!function_exists('get_template_directory_uri')) {
+        function get_template_directory_uri(): string {
+            $script_name = $_SERVER['SCRIPT_NAME'] ?? '';
+            $dir = dirname($script_name);
+            return rtrim(str_replace('\\', '/', $dir), '/');
+        }
+    }
 
-if (!function_exists('wp_footer')) {
-    function wp_footer(): void {
-        $uri = get_template_directory_uri();
-        echo '<script src="' . esc_url($uri . '/assets/js/landing.js') . '"></script>' . "\n";
+    if (!function_exists('home_url')) {
+        function home_url(string $path = ''): string {
+            $uri = get_template_directory_uri();
+            return $uri . '/' . ltrim($path, '/');
+        }
+    }
+
+    if (!function_exists('add_theme_support')) {
+        function add_theme_support($feature, $options = null): void {}
+    }
+
+    if (!function_exists('add_action')) {
+        function add_action($hook, $callback): void {}
+    }
+
+    if (!function_exists('add_filter')) {
+        function add_filter($hook, $callback): void {}
+    }
+
+    if (!function_exists('add_rewrite_rule')) {
+        function add_rewrite_rule($regex, $query, $after = 'bottom'): void {}
+    }
+
+    if (!function_exists('add_rewrite_tag')) {
+        function add_rewrite_tag($tag, $regex): void {}
+    }
+
+    if (!function_exists('get_query_var')) {
+        function get_query_var($var, $default = '') {
+            return $_GET[$var] ?? $default;
+        }
+    }
+
+    if (!function_exists('wp_enqueue_style')) {
+        function wp_enqueue_style($handle, $src = '', $deps = [], $ver = false, $media = 'all'): void {}
+    }
+
+    if (!function_exists('wp_enqueue_script')) {
+        function wp_enqueue_script($handle, $src = '', $deps = [], $ver = false, $in_footer = false): void {}
+    }
+
+    if (!function_exists('esc_html')) {
+        function esc_html($text): string {
+            return htmlspecialchars((string)$text, ENT_QUOTES, 'UTF-8');
+        }
+    }
+
+    if (!function_exists('esc_html__')) {
+        function esc_html__($text, $domain = 'default'): string {
+            return htmlspecialchars((string)$text, ENT_QUOTES, 'UTF-8');
+        }
+    }
+
+    if (!function_exists('esc_attr')) {
+        function esc_attr($text): string {
+            return htmlspecialchars((string)$text, ENT_QUOTES, 'UTF-8');
+        }
+    }
+
+    if (!function_exists('esc_url')) {
+        function esc_url($url): string {
+            return htmlspecialchars((string)$url, ENT_QUOTES, 'UTF-8');
+        }
+    }
+
+    if (!function_exists('antispambot')) {
+        function antispambot($email): string {
+            return (string)$email;
+        }
+    }
+
+    if (!function_exists('current_user_can')) {
+        function current_user_can($capability): bool {
+            return true;
+        }
+    }
+
+    if (!function_exists('__')) {
+        function __($text, $domain = 'default'): string {
+            return (string)$text;
+        }
+    }
+
+    if (!function_exists('status_header')) {
+        function status_header($code): void {
+            http_response_code($code);
+        }
+    }
+
+    if (!function_exists('get_header')) {
+        function get_header($name = null): void {
+            require_once __DIR__ . '/header.php';
+        }
+    }
+
+    if (!function_exists('get_footer')) {
+        function get_footer($name = null): void {
+            require_once __DIR__ . '/footer.php';
+        }
+    }
+
+    if (!function_exists('language_attributes')) {
+        function language_attributes(): void {
+            echo 'lang="en-US"';
+        }
+    }
+
+    if (!function_exists('bloginfo')) {
+        function bloginfo($show = ''): void {
+            if ($show === 'charset') { echo 'UTF-8'; }
+        }
+    }
+
+    if (!function_exists('wp_head')) {
+        function wp_head(): void {
+            $uri = get_template_directory_uri();
+            echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+            echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+            echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">' . "\n";
+            echo '<link rel="stylesheet" href="' . esc_url($uri . '/assets/css/landing.css') . '">' . "\n";
+        }
+    }
+
+    if (!function_exists('body_class')) {
+        function body_class($class = ''): void {
+            $current = aba_get_current_page();
+            $classes = 'aba-body page-' . esc_attr($current);
+            if ($class) {
+                $classes .= ' ' . esc_attr($class);
+            }
+            echo 'class="' . $classes . '"';
+        }
+    }
+
+    if (!function_exists('wp_body_open')) {
+        function wp_body_open(): void {}
+    }
+
+    if (!function_exists('wp_footer')) {
+        function wp_footer(): void {
+            $uri = get_template_directory_uri();
+            echo '<script src="' . esc_url($uri . '/assets/js/landing.js') . '"></script>' . "\n";
+        }
     }
 }
 
@@ -165,11 +173,23 @@ function aba_enqueue_assets(): void {
     $uri = get_template_directory_uri();
     $dir = get_template_directory();
 
+    $css_file = $dir . '/assets/css/landing.css';
+    $css_ver = file_exists($css_file) ? (string)filemtime($css_file) : '1.0.0';
+    $js_file = $dir . '/assets/js/landing.js';
+    $js_ver = file_exists($js_file) ? (string)filemtime($js_file) : '1.0.0';
+
     wp_enqueue_style('aba-fonts', 'https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap', [], null);
-    wp_enqueue_style('aba-landing', $uri . '/assets/css/landing.css', ['aba-fonts'], (string)filemtime($dir . '/assets/css/landing.css'));
-    wp_enqueue_script('aba-landing', $uri . '/assets/js/landing.js', [], (string)filemtime($dir . '/assets/js/landing.js'), true);
+    wp_enqueue_style('aba-landing', $uri . '/assets/css/landing.css', ['aba-fonts'], $css_ver);
+    wp_enqueue_script('aba-landing', $uri . '/assets/js/landing.js', [], $js_ver, true);
 }
 add_action('wp_enqueue_scripts', 'aba_enqueue_assets');
+
+// Safely flush rewrite rules when theme is activated
+add_action('after_switch_theme', function(): void {
+    if (function_exists('flush_rewrite_rules')) {
+        flush_rewrite_rules();
+    }
+});
 
 // Register clean rewrite rules for single service pages in WordPress
 add_action('init', function(): void {
@@ -246,7 +266,7 @@ function aba_get_current_page(): string {
     }
 
     if (isset($_GET['page']) && !empty($_GET['page'])) {
-        return sanitize_title($_GET['page']);
+        return aba_sanitize_slug($_GET['page']);
     }
 
     if (function_exists('is_front_page') && is_front_page()) {
@@ -266,8 +286,16 @@ function aba_get_current_page(): string {
     return 'home';
 }
 
-function sanitize_title(string $title): string {
+function aba_sanitize_slug(string $title): string {
+    if (function_exists('sanitize_title')) {
+        return sanitize_title($title);
+    }
     return strtolower(preg_replace('/[^a-zA-Z0-9_-]/', '', $title));
+}
+if (!function_exists('sanitize_title')) {
+    function sanitize_title(string $title): string {
+        return aba_sanitize_slug($title);
+    }
 }
 
 function aba_page_url(string $slug): string {
@@ -363,7 +391,6 @@ function aba_render_cta_banner(string $title = '', string $description = '', str
     ?>
     <section class="final-wrap" id="cta-banner">
       <div class="container final-cta reveal-scale">
-        <div class="confetti left" aria-hidden="true">★ ✦ ★</div>
         <div class="final-cta-copy">
           <h2><?php echo esc_html($title); ?></h2>
           <p><?php echo esc_html($desc); ?></p>
@@ -378,7 +405,6 @@ function aba_render_cta_banner(string $title = '', string $description = '', str
             <span aria-hidden="true">→</span>
           </a>
         </div>
-        <div class="confetti right" aria-hidden="true">✦ ★</div>
       </div>
     </section>
     <?php

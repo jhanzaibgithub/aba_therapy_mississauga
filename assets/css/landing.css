@@ -1478,13 +1478,24 @@ button:focus-visible {
   font-size: 14px;
 }
 
+.testimonial-box {
+  display: flex;
+  height: 100%;
+}
+
 .testimonial-box blockquote {
   background: #fff;
   border-radius: 20px 0 0 20px;
   margin: 0;
-  padding: 30px 32px;
+  padding: 36px 36px;
   position: relative;
   height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-dark);
+  font-weight: 500;
   transition: box-shadow 0.35s;
 }
 
@@ -1503,29 +1514,6 @@ button:focus-visible {
 
 .testimonial-box:hover .quote {
   transform: scale(1.1) rotate(-5deg);
-}
-
-.local blockquote p {
-  color: var(--text-dark);
-  font-size: 13px;
-  margin-top: 19px;
-  line-height: 1.65;
-}
-
-.local cite {
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 700;
-  display: block;
-  margin-top: 14px;
-  color: var(--text-dark);
-}
-
-.stars {
-  color: var(--yellow);
-  font-size: 19px;
-  letter-spacing: 4px;
-  margin-top: 19px;
 }
 
 .map-wrap {
@@ -1728,10 +1716,10 @@ button:focus-visible {
   color: #fff;
   display: flex;
   justify-content: space-between;
-  gap: 70px;
+  gap: 32px;
   min-height: 133px;
   overflow: hidden;
-  padding: 32px 85px;
+  padding: 32px 48px;
   position: relative;
 }
 
@@ -1745,34 +1733,35 @@ button:focus-visible {
   }
 }
 
+.final-cta-copy {
+  flex: 1;
+  min-width: 0;
+}
+
 .final-cta-copy h2 {
-  font-size: 32px;
-  margin: 0 0 5px;
+  font-size: clamp(24px, 2.3vw, 32px);
+  margin: 0 0 6px;
   color: #fff;
+  line-height: 1.25;
 }
 
 .final-cta-copy p {
-  font-size: 14px;
+  font-size: 14.5px;
   margin: 0;
   color: rgba(255, 255, 255, 0.92);
+  line-height: 1.5;
+}
+
+.final-cta .button-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
 }
 
 .confetti {
-  color: var(--yellow);
-  font-size: 19px;
-  letter-spacing: 7px;
-  position: absolute;
-  animation: floatBlob 4s ease-in-out infinite alternate;
-}
-
-.confetti.left {
-  left: 24px;
-  transform: rotate(-16deg);
-}
-
-.confetti.right {
-  right: 18px;
-  bottom: 22px;
+  display: none;
 }
 
 /* FOOTER */
@@ -3264,5 +3253,327 @@ main#main {
 
   .process-line path {
     stroke-dashoffset: 0 !important;
+  }
+
+  .site-preloader {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   PREMIUM THERAPY ANIMATED PAGE PRELOADER (GLOBAL)
+   ========================================================================== */
+.site-preloader {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 253, 250, 0.62);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  overflow: hidden;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform, visibility;
+}
+
+.site-preloader.is-loaded {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+/* Atmospheric Calming Glow Background (Low Opacity) */
+.preloader-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(700px circle at 50% 50%, rgba(89, 32, 155, 0.04), rgba(9, 166, 173, 0.03) 45%, transparent 75%);
+  pointer-events: none;
+}
+
+/* Centered Content Stack */
+.preloader-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 2;
+  padding: 30px;
+  max-width: 460px;
+}
+
+/* Concentric Calming Therapy Aura Rings */
+.preloader-aura {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.aura-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  pointer-events: none;
+}
+
+.aura-ring.ring-1 {
+  border-color: rgba(89, 32, 155, 0.16);
+  background: radial-gradient(circle, rgba(89, 32, 155, 0.04) 0%, transparent 70%);
+  animation: preloaderAuraPulse 3.2s ease-in-out infinite;
+}
+
+.aura-ring.ring-2 {
+  inset: -28px;
+  border-color: rgba(9, 166, 173, 0.14);
+  background: radial-gradient(circle, rgba(9, 166, 173, 0.03) 0%, transparent 70%);
+  animation: preloaderAuraPulse 3.2s ease-in-out infinite 0.7s;
+}
+
+.aura-ring.ring-3 {
+  inset: -58px;
+  border-color: rgba(167, 206, 25, 0.16);
+  animation: preloaderAuraPulse 3.2s ease-in-out infinite 1.4s;
+}
+
+@keyframes preloaderAuraPulse {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.85;
+  }
+}
+
+/* Logo Wrap and Glassmorphic Card */
+.preloader-logo-wrap {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 26px;
+}
+
+.preloader-logo-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 34px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 22px;
+  border: 1px solid rgba(89, 32, 155, 0.11);
+  box-shadow: 0 16px 42px rgba(54, 28, 75, 0.08), 0 2px 10px rgba(89, 32, 155, 0.05);
+  animation: preloaderLogoFloat 3s ease-in-out infinite;
+  overflow: hidden;
+}
+
+.preloader-logo-img {
+  display: block;
+  max-width: 225px;
+  width: auto;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(39, 19, 79, 0.05));
+}
+
+.preloader-fallback-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--purple-dark);
+}
+
+.preloader-fallback-brand b {
+  font-family: var(--serif);
+  font-size: 20px;
+  letter-spacing: 0.04em;
+}
+
+.preloader-fallback-brand small {
+  font-size: 13px;
+  color: var(--teal);
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
+@keyframes preloaderLogoFloat {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    box-shadow: 0 16px 42px rgba(54, 28, 75, 0.08), 0 2px 10px rgba(89, 32, 155, 0.05);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.018);
+    box-shadow: 0 24px 50px rgba(54, 28, 75, 0.12), 0 4px 16px rgba(89, 32, 155, 0.09);
+  }
+}
+
+/* Subtle Shimmer Sweep across the Logo Card */
+.preloader-shimmer {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.7) 50%,
+    transparent 80%
+  );
+  animation: preloaderShimmer 2.8s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+@keyframes preloaderShimmer {
+  0% {
+    left: -150%;
+  }
+  50%, 100% {
+    left: 150%;
+  }
+}
+
+/* Sleek Progress Track */
+.preloader-progress-wrap {
+  position: relative;
+  z-index: 2;
+  width: 210px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.preloader-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(89, 32, 155, 0.09);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.preloader-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, var(--purple) 0%, var(--teal) 50%, var(--green) 100%);
+  border-radius: 999px;
+  animation: preloaderProgressTrack 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes preloaderProgressTrack {
+  0% {
+    left: -40%;
+    width: 30%;
+  }
+  50% {
+    width: 60%;
+  }
+  100% {
+    left: 100%;
+    width: 30%;
+  }
+}
+
+/* Pulsing Therapeutic Rhythm Dots */
+.preloader-pulse-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.preloader-pulse-dots .p-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  animation: preloaderDotPulse 1.4s ease-in-out infinite;
+}
+
+.preloader-pulse-dots .p-dot:nth-child(1) {
+  background: var(--purple);
+  animation-delay: 0s;
+}
+
+.preloader-pulse-dots .p-dot:nth-child(2) {
+  background: var(--teal);
+  animation-delay: 0.22s;
+}
+
+.preloader-pulse-dots .p-dot:nth-child(3) {
+  background: var(--green);
+  animation-delay: 0.44s;
+}
+
+@keyframes preloaderDotPulse {
+  0%, 100% {
+    transform: scale(0.7);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
+}
+
+/* Reassuring Therapy Micro-Text */
+.preloader-text {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0;
+  opacity: 0.85;
+  animation: preloaderTextFade 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes preloaderTextFade {
+  0% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 576px) {
+  .preloader-logo-card {
+    padding: 14px 24px;
+  }
+  .preloader-logo-img {
+    max-width: 185px;
+    height: 40px;
+  }
+  .preloader-aura {
+    width: 250px;
+    height: 250px;
+  }
+  .preloader-progress-wrap {
+    width: 170px;
+  }
+  .preloader-text {
+    font-size: 11.5px;
+    letter-spacing: 0.09em;
   }
 }

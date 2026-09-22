@@ -64,7 +64,7 @@ $footer_services = $c['footer']['services'] ?? [
       <h2>Our Services</h2>
       <ul>
         <?php foreach ($footer_services as $srv): 
-          $slug = is_array($srv) ? ($srv['slug'] ?? 'services') : sanitize_title($srv);
+          $slug = is_array($srv) ? ($srv['slug'] ?? 'services') : aba_sanitize_slug($srv);
           $title = is_array($srv) ? ($srv['title'] ?? '') : $srv;
         ?>
           <li>

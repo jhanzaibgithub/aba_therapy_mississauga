@@ -145,15 +145,9 @@ aba_render_page_hero(
     </div>
 
     <div class="testimonial-box reveal-scale">
-      <div class="stars" aria-label="<?php echo esc_attr($c['local_area']['testimonial']['rating']); ?> out of 5 stars">
-        <?php for ($s = 0; $s < (int)$c['local_area']['testimonial']['rating']; $s++): ?>
-          <span aria-hidden="true">★</span>
-        <?php endfor; ?>
-      </div>
       <blockquote>
         "<?php echo esc_html($c['local_area']['testimonial']['quote']); ?>"
       </blockquote>
-      <cite><?php echo esc_html($c['local_area']['testimonial']['attribution']); ?></cite>
     </div>
 
     <div class="map-wrap reveal-slide-right">

@@ -1,6 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  // 0. Premium Therapy Animated Page Preloader Controller
+  const preloader = document.getElementById('site-preloader');
+  if (preloader && !preloader.classList.contains('is-loaded')) {
+    setTimeout(function () {
+      preloader.classList.add('is-loaded');
+      document.body.classList.add('page-is-loaded');
+      setTimeout(function () {
+        if (preloader.parentNode) {
+          preloader.style.display = 'none';
+        }
+      }, 550);
+    }, 350);
+  }
+
   // 1. Top Scroll Progress Bar
   const progressBar = document.getElementById('scroll-progress');
   function updateScrollProgress() {
