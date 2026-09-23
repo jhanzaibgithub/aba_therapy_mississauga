@@ -201,9 +201,9 @@ add_action('admin_init', function(): void {
     }
 
     $installed_ver = get_option('aba_theme_version', '');
-    if ($installed_ver !== '1.2.0') {
-        aba_setup_pages_and_options(false);
-        update_option('aba_theme_version', '1.2.0');
+    if ($installed_ver !== '1.3.0') {
+        aba_setup_pages_and_options(true);
+        update_option('aba_theme_version', '1.3.0');
     }
 });
 
@@ -381,47 +381,157 @@ function aba_render_page_headings_metabox($post): void {
     $c = aba_load_content();
     $slug = $post->post_name ?: '';
 
+    // Section 1: Hero
     $eyebrow = get_post_meta($post->ID, '_aba_hero_eyebrow', true);
     $title = get_post_meta($post->ID, '_aba_hero_title', true);
     $subtitle = get_post_meta($post->ID, '_aba_hero_subtitle', true);
+    $trust_text = get_post_meta($post->ID, '_aba_hero_trust', true);
 
     if ($slug === 'home' || $slug === '') {
         $eyebrow = $eyebrow !== '' ? $eyebrow : ($c['hero']['eyebrow'] ?? '');
         $title = $title !== '' ? $title : ($c['hero']['title'] ?? '');
         $subtitle = $subtitle !== '' ? $subtitle : ($c['hero']['description'] ?? '');
-        $trust_text = get_post_meta($post->ID, '_aba_hero_trust', true);
         $trust_text = $trust_text !== '' ? $trust_text : ($c['hero']['trust_text'] ?? '');
     } elseif (isset($c['pages'][$slug])) {
         $eyebrow = $eyebrow !== '' ? $eyebrow : ($c['pages'][$slug]['eyebrow'] ?? '');
         $title = $title !== '' ? $title : ($c['pages'][$slug]['title'] ?? '');
         $subtitle = $subtitle !== '' ? $subtitle : ($c['pages'][$slug]['subtitle'] ?? '');
     }
+
+    // Section 2: Approach (Home)
+    $app_eyebrow = get_post_meta($post->ID, '_aba_approach_eyebrow', true) ?: ($c['approach']['eyebrow'] ?? 'OUR CLINICAL PHILOSOPHY');
+    $app_title = get_post_meta($post->ID, '_aba_approach_title', true) ?: ($c['approach']['title'] ?? 'Rooted in empathy, driven by science.');
+    $app_desc = get_post_meta($post->ID, '_aba_approach_desc', true) ?: ($c['approach']['description'] ?? '');
+
+    // Section 3: Services (Home)
+    $srv_eyebrow = get_post_meta($post->ID, '_aba_services_eyebrow', true) ?: ($c['services']['eyebrow'] ?? 'COMPREHENSIVE CARE');
+    $srv_title = get_post_meta($post->ID, '_aba_services_title', true) ?: ($c['services']['title'] ?? 'Comprehensive ABA therapy services in Mississauga.');
+
+    // Section 4: Family Fit (Home)
+    $fam_eyebrow = get_post_meta($post->ID, '_aba_family_fit_eyebrow', true) ?: ($c['family_fit']['eyebrow'] ?? 'THE DIFFERENCE');
+    $fam_title = get_post_meta($post->ID, '_aba_family_fit_title', true) ?: ($c['family_fit']['title'] ?? 'Care thoughtfully tailored around your child.');
+    $fam_desc = get_post_meta($post->ID, '_aba_family_fit_desc', true) ?: ($c['family_fit']['description'] ?? '');
+
+    // Final CTA Banner (All Pages)
+    $cta_title = get_post_meta($post->ID, '_aba_cta_title', true) ?: ($c['final_cta']['title'] ?? 'Ready to take the next step?');
+    $cta_desc = get_post_meta($post->ID, '_aba_cta_desc', true) ?: ($c['final_cta']['description'] ?? "We're here to help your child grow, learn and thrive.");
+    $cta_btn = get_post_meta($post->ID, '_aba_cta_primary', true) ?: ($c['final_cta']['primary'] ?? 'Book a Consultation');
     ?>
+    <style>
+        .aba-section-card {
+            background: #fff;
+            border: 1px solid #dcdcde;
+            border-left: 5px solid #59209b;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+        .aba-section-card h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: #59209b;
+            font-weight: 700;
+        }
+        .aba-section-card label {
+            font-weight: 600;
+            color: #23282d;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .aba-section-card .field-group {
+            margin-bottom: 14px;
+        }
+        .aba-section-card .field-group:last-child {
+            margin-bottom: 0;
+        }
+        .aba-intro-note {
+            font-size: 13px;
+            color: #333;
+            background: #f0f6fc;
+            padding: 12px 16px;
+            border-left: 4px solid #59209b;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+
     <div style="padding: 10px 0;">
-        <p style="font-size: 13px; color: #444; margin-bottom: 15px; background: #f0f6fc; padding: 10px 14px; border-left: 4px solid #59209b; border-radius: 4px;">
-            ✏️ <strong>Live Visual Headings &amp; Banners:</strong> Edit the main hero banner headings and text for this page below. When you click <strong>Update</strong>, these headings will update immediately on the website without needing Elementor.
-        </p>
-        
-        <p>
-            <label for="aba_hero_eyebrow" style="font-weight: 600; display: block; margin-bottom: 5px;">Hero Tagline / Eyebrow (Small Top Text):</label>
-            <input type="text" id="aba_hero_eyebrow" name="aba_hero_eyebrow" value="<?php echo esc_attr($eyebrow); ?>" class="widefat" style="padding: 8px 10px;">
-        </p>
+        <div class="aba-intro-note">
+            💡 <strong>Section-by-Section Editor:</strong> You can edit the content for every section of this page below. When you click <strong>Update</strong>, your changes immediately go live on the website — no Elementor required!
+        </div>
 
-        <p>
-            <label for="aba_hero_title" style="font-weight: 600; display: block; margin-bottom: 5px;">Main Heading Title (H1):</label>
-            <input type="text" id="aba_hero_title" name="aba_hero_title" value="<?php echo esc_attr($title); ?>" class="widefat" style="padding: 8px 10px; font-size: 15px; font-weight: bold;">
-        </p>
-
-        <p>
-            <label for="aba_hero_subtitle" style="font-weight: 600; display: block; margin-bottom: 5px;">Subtitle / Description Paragraph:</label>
-            <textarea id="aba_hero_subtitle" name="aba_hero_subtitle" rows="3" class="widefat" style="padding: 8px 10px;"><?php echo esc_textarea($subtitle); ?></textarea>
-        </p>
+        <!-- SECTION 1: HERO BANNER -->
+        <div class="aba-section-card">
+            <h3>🏠 Section 1: Hero Banner</h3>
+            <div class="field-group">
+                <label for="aba_hero_eyebrow">Hero Tagline / Eyebrow (Small Top Text):</label>
+                <input type="text" id="aba_hero_eyebrow" name="aba_hero_eyebrow" value="<?php echo esc_attr($eyebrow); ?>" class="widefat" style="padding: 8px 10px;">
+            </div>
+            <div class="field-group">
+                <label for="aba_hero_title">Main Heading Title (H1):</label>
+                <input type="text" id="aba_hero_title" name="aba_hero_title" value="<?php echo esc_attr($title); ?>" class="widefat" style="padding: 8px 10px; font-size: 15px; font-weight: bold;">
+            </div>
+            <div class="field-group">
+                <label for="aba_hero_subtitle">Subtitle / Description Paragraph:</label>
+                <textarea id="aba_hero_subtitle" name="aba_hero_subtitle" rows="3" class="widefat" style="padding: 8px 10px;"><?php echo esc_textarea($subtitle); ?></textarea>
+            </div>
+            <?php if ($slug === 'home' || $slug === ''): ?>
+                <div class="field-group">
+                    <label for="aba_hero_trust">Trust Badge Text (Under Buttons):</label>
+                    <input type="text" id="aba_hero_trust" name="aba_hero_trust" value="<?php echo esc_attr($trust_text ?? ''); ?>" class="widefat" style="padding: 8px 10px;">
+                </div>
+            <?php endif; ?>
+        </div>
 
         <?php if ($slug === 'home' || $slug === ''): ?>
-            <p>
-                <label for="aba_hero_trust" style="font-weight: 600; display: block; margin-bottom: 5px;">Trust Badge Text (Under Buttons):</label>
-                <input type="text" id="aba_hero_trust" name="aba_hero_trust" value="<?php echo esc_attr($trust_text ?? ''); ?>" class="widefat" style="padding: 8px 10px;">
-            </p>
+            <!-- SECTION 2: OUR APPROACH PREVIEW (HOME) -->
+            <div class="aba-section-card">
+                <h3>🌿 Section 2: Our Approach Preview</h3>
+                <div class="field-group">
+                    <label for="aba_approach_eyebrow">Section Eyebrow:</label>
+                    <input type="text" id="aba_approach_eyebrow" name="aba_approach_eyebrow" value="<?php echo esc_attr($app_eyebrow); ?>" class="widefat" style="padding: 8px 10px;">
+                </div>
+                <div class="field-group">
+                    <label for="aba_approach_title">Section Heading (H2):</label>
+                    <input type="text" id="aba_approach_title" name="aba_approach_title" value="<?php echo esc_attr($app_title); ?>" class="widefat" style="padding: 8px 10px; font-size: 14px; font-weight: bold;">
+                </div>
+                <div class="field-group">
+                    <label for="aba_approach_desc">Section Description:</label>
+                    <textarea id="aba_approach_desc" name="aba_approach_desc" rows="3" class="widefat" style="padding: 8px 10px;"><?php echo esc_textarea($app_desc); ?></textarea>
+                </div>
+            </div>
+
+            <!-- SECTION 3: CLINICAL SERVICES (HOME) -->
+            <div class="aba-section-card">
+                <h3>🧩 Section 3: Clinical Services Overview</h3>
+                <div class="field-group">
+                    <label for="aba_services_eyebrow">Section Eyebrow:</label>
+                    <input type="text" id="aba_services_eyebrow" name="aba_services_eyebrow" value="<?php echo esc_attr($srv_eyebrow); ?>" class="widefat" style="padding: 8px 10px;">
+                </div>
+                <div class="field-group">
+                    <label for="aba_services_title">Section Heading (H2):</label>
+                    <input type="text" id="aba_services_title" name="aba_services_title" value="<?php echo esc_attr($srv_title); ?>" class="widefat" style="padding: 8px 10px; font-size: 14px; font-weight: bold;">
+                </div>
+            </div>
+
+            <!-- SECTION 4: WHY FAMILIES CHOOSE US (HOME) -->
+            <div class="aba-section-card">
+                <h3>❤️ Section 4: Why Families Choose Us (Family Fit)</h3>
+                <div class="field-group">
+                    <label for="aba_family_fit_eyebrow">Section Eyebrow:</label>
+                    <input type="text" id="aba_family_fit_eyebrow" name="aba_family_fit_eyebrow" value="<?php echo esc_attr($fam_eyebrow); ?>" class="widefat" style="padding: 8px 10px;">
+                </div>
+                <div class="field-group">
+                    <label for="aba_family_fit_title">Section Heading (H2):</label>
+                    <input type="text" id="aba_family_fit_title" name="aba_family_fit_title" value="<?php echo esc_attr($fam_title); ?>" class="widefat" style="padding: 8px 10px; font-size: 14px; font-weight: bold;">
+                </div>
+                <div class="field-group">
+                    <label for="aba_family_fit_desc">Section Description:</label>
+                    <textarea id="aba_family_fit_desc" name="aba_family_fit_desc" rows="3" class="widefat" style="padding: 8px 10px;"><?php echo esc_textarea($fam_desc); ?></textarea>
+                </div>
+            </div>
         <?php endif; ?>
 
         <?php if ($slug === 'contact'): 
@@ -430,26 +540,44 @@ function aba_render_page_headings_metabox($post): void {
             $address = get_post_meta($post->ID, '_aba_contact_address', true) ?: 'Mississauga, Ontario (Serving Peel & Halton Regions)';
             $hours = get_post_meta($post->ID, '_aba_contact_hours', true) ?: 'Monday – Friday: 8:00 AM – 6:30 PM | Saturday: 9:00 AM – 2:00 PM';
         ?>
-            <div style="margin-top: 25px; padding-top: 20px; border-top: 2px dashed #ddd;">
-                <h3 style="margin-top: 0; color: #59209b;">📞 Direct Contact Details for Contact Page</h3>
-                <p>
-                    <label for="aba_contact_phone" style="font-weight: 600; display: block; margin-bottom: 5px;">Phone Number (Display):</label>
+            <!-- SECTION 2: CONTACT DETAILS -->
+            <div class="aba-section-card">
+                <h3>📞 Section 2: Direct Contact Details &amp; Hours</h3>
+                <div class="field-group">
+                    <label for="aba_contact_phone">Phone Number (Display):</label>
                     <input type="text" id="aba_contact_phone" name="aba_contact_phone" value="<?php echo esc_attr($phone); ?>" class="widefat" style="padding: 8px 10px;">
-                </p>
-                <p>
-                    <label for="aba_contact_email" style="font-weight: 600; display: block; margin-bottom: 5px;">Email Address:</label>
+                </div>
+                <div class="field-group">
+                    <label for="aba_contact_email">Email Address:</label>
                     <input type="email" id="aba_contact_email" name="aba_contact_email" value="<?php echo esc_attr($email); ?>" class="widefat" style="padding: 8px 10px;">
-                </p>
-                <p>
-                    <label for="aba_contact_address" style="font-weight: 600; display: block; margin-bottom: 5px;">Location / Service Area:</label>
+                </div>
+                <div class="field-group">
+                    <label for="aba_contact_address">Location / Service Area:</label>
                     <input type="text" id="aba_contact_address" name="aba_contact_address" value="<?php echo esc_attr($address); ?>" class="widefat" style="padding: 8px 10px;">
-                </p>
-                <p>
-                    <label for="aba_contact_hours" style="font-weight: 600; display: block; margin-bottom: 5px;">Office Hours:</label>
+                </div>
+                <div class="field-group">
+                    <label for="aba_contact_hours">Office Hours:</label>
                     <input type="text" id="aba_contact_hours" name="aba_contact_hours" value="<?php echo esc_attr($hours); ?>" class="widefat" style="padding: 8px 10px;">
-                </p>
+                </div>
             </div>
         <?php endif; ?>
+
+        <!-- SECTION: CALL TO ACTION BANNER -->
+        <div class="aba-section-card">
+            <h3>🚀 Final Call to Action Banner</h3>
+            <div class="field-group">
+                <label for="aba_cta_title">Banner Heading:</label>
+                <input type="text" id="aba_cta_title" name="aba_cta_title" value="<?php echo esc_attr($cta_title); ?>" class="widefat" style="padding: 8px 10px;">
+            </div>
+            <div class="field-group">
+                <label for="aba_cta_desc">Banner Description:</label>
+                <textarea id="aba_cta_desc" name="aba_cta_desc" rows="2" class="widefat" style="padding: 8px 10px;"><?php echo esc_textarea($cta_desc); ?></textarea>
+            </div>
+            <div class="field-group">
+                <label for="aba_cta_primary">Primary Button Label:</label>
+                <input type="text" id="aba_cta_primary" name="aba_cta_primary" value="<?php echo esc_attr($cta_btn); ?>" class="widefat" style="padding: 8px 10px;">
+            </div>
+        </div>
     </div>
     <?php
 }
@@ -465,6 +593,7 @@ add_action('save_post_page', function($post_id): void {
         return;
     }
 
+    // Hero
     if (isset($_POST['aba_hero_eyebrow'])) {
         update_post_meta($post_id, '_aba_hero_eyebrow', sanitize_text_field($_POST['aba_hero_eyebrow']));
     }
@@ -477,6 +606,38 @@ add_action('save_post_page', function($post_id): void {
     if (isset($_POST['aba_hero_trust'])) {
         update_post_meta($post_id, '_aba_hero_trust', sanitize_text_field($_POST['aba_hero_trust']));
     }
+
+    // Approach
+    if (isset($_POST['aba_approach_eyebrow'])) {
+        update_post_meta($post_id, '_aba_approach_eyebrow', sanitize_text_field($_POST['aba_approach_eyebrow']));
+    }
+    if (isset($_POST['aba_approach_title'])) {
+        update_post_meta($post_id, '_aba_approach_title', sanitize_text_field($_POST['aba_approach_title']));
+    }
+    if (isset($_POST['aba_approach_desc'])) {
+        update_post_meta($post_id, '_aba_approach_desc', sanitize_textarea_field($_POST['aba_approach_desc']));
+    }
+
+    // Services
+    if (isset($_POST['aba_services_eyebrow'])) {
+        update_post_meta($post_id, '_aba_services_eyebrow', sanitize_text_field($_POST['aba_services_eyebrow']));
+    }
+    if (isset($_POST['aba_services_title'])) {
+        update_post_meta($post_id, '_aba_services_title', sanitize_text_field($_POST['aba_services_title']));
+    }
+
+    // Family Fit
+    if (isset($_POST['aba_family_fit_eyebrow'])) {
+        update_post_meta($post_id, '_aba_family_fit_eyebrow', sanitize_text_field($_POST['aba_family_fit_eyebrow']));
+    }
+    if (isset($_POST['aba_family_fit_title'])) {
+        update_post_meta($post_id, '_aba_family_fit_title', sanitize_text_field($_POST['aba_family_fit_title']));
+    }
+    if (isset($_POST['aba_family_fit_desc'])) {
+        update_post_meta($post_id, '_aba_family_fit_desc', sanitize_textarea_field($_POST['aba_family_fit_desc']));
+    }
+
+    // Contact
     if (isset($_POST['aba_contact_phone'])) {
         update_post_meta($post_id, '_aba_contact_phone', sanitize_text_field($_POST['aba_contact_phone']));
     }
@@ -488,6 +649,17 @@ add_action('save_post_page', function($post_id): void {
     }
     if (isset($_POST['aba_contact_hours'])) {
         update_post_meta($post_id, '_aba_contact_hours', sanitize_text_field($_POST['aba_contact_hours']));
+    }
+
+    // CTA
+    if (isset($_POST['aba_cta_title'])) {
+        update_post_meta($post_id, '_aba_cta_title', sanitize_text_field($_POST['aba_cta_title']));
+    }
+    if (isset($_POST['aba_cta_desc'])) {
+        update_post_meta($post_id, '_aba_cta_desc', sanitize_textarea_field($_POST['aba_cta_desc']));
+    }
+    if (isset($_POST['aba_cta_primary'])) {
+        update_post_meta($post_id, '_aba_cta_primary', sanitize_text_field($_POST['aba_cta_primary']));
     }
 });
 
@@ -507,14 +679,23 @@ function aba_setup_pages_and_options(bool $force = false): void {
             'slug'     => 'home',
             'template' => 'front-page.php',
             'meta'     => [
-                '_aba_hero_eyebrow' => $c['hero']['eyebrow'] ?? 'COMPASSIONATE. PERSONALIZED. PURPOSEFUL.',
-                '_aba_hero_title'   => $c['hero']['title'] ?? 'Helping children grow with confidence.',
-                '_aba_hero_subtitle'=> $c['hero']['description'] ?? 'Individualized ABA therapy designed around your child, your family, and everyday life.',
-                '_aba_btn_primary'  => $c['global_ctas']['primary'] ?? 'Book a Consultation',
-                '_aba_btn_secondary'=> $c['global_ctas']['secondary'] ?? 'Explore Our Approach',
-                '_aba_trust_text'   => $c['hero']['trust_text'] ?? 'Trusted by families across Mississauga and surrounding communities.',
+                '_aba_hero_eyebrow'     => $c['hero']['eyebrow'] ?? 'COMPASSIONATE ABA THERAPY IN MISSISSAUGA',
+                '_aba_hero_title'       => $c['hero']['title'] ?? 'Personalized ABA therapy that helps your child thrive.',
+                '_aba_hero_subtitle'    => $c['hero']['description'] ?? 'Play-based, evidence-driven behavioral therapy designed for children in Mississauga and surrounding communities. From early words to big social milestones, we walk alongside your family every step of the way.',
+                '_aba_hero_trust'       => $c['hero']['trust_text'] ?? 'Trusted by 250+ Mississauga & GTA Families',
+                '_aba_approach_eyebrow' => $c['approach']['eyebrow'] ?? 'OUR CLINICAL PHILOSOPHY',
+                '_aba_approach_title'   => $c['approach']['title'] ?? 'Rooted in empathy, driven by science.',
+                '_aba_approach_desc'    => $c['approach']['description'] ?? 'We believe therapy is most effective when it feels natural, engaging, and joyful. Our naturalistic approach integrates your child’s favorite toys, routines, and everyday environments to foster genuine development.',
+                '_aba_services_eyebrow' => $c['services']['eyebrow'] ?? 'COMPREHENSIVE CARE',
+                '_aba_services_title'   => $c['services']['title'] ?? 'Comprehensive ABA therapy services in Mississauga.',
+                '_aba_family_fit_eyebrow'=> $c['family_fit']['eyebrow'] ?? 'THE DIFFERENCE',
+                '_aba_family_fit_title' => $c['family_fit']['title'] ?? 'Care thoughtfully tailored around your child.',
+                '_aba_family_fit_desc'  => $c['family_fit']['description'] ?? 'Every child is wonderfully distinct. We adapt our play-based therapy to fit your family dynamics, routines, and culture.',
+                '_aba_cta_title'        => $c['final_cta']['title'] ?? 'Ready to take the next step?',
+                '_aba_cta_desc'         => $c['final_cta']['description'] ?? "We're here to help your child grow, learn and thrive.",
+                '_aba_cta_primary'      => $c['final_cta']['primary'] ?? 'Book a Consultation',
             ],
-            'content'  => "<h1>Helping children grow with confidence.</h1>\n\n<p>Individualized ABA therapy designed around your child, your family, and everyday life.</p>\n\n<h2>Compassionate, In-Home & Clinical ABA Therapy in Mississauga</h2>\n\n<p>Our evidence-based programs are customized for children with autism and developmental delays. We focus on communication, daily living skills, and joyful social interactions.</p>",
+            'content'  => "<!-- ================= SECTION 1: HERO BANNER ================= -->\n<div class=\"aba-section-block\" data-section=\"hero\">\n  <p class=\"hero-eyebrow\">COMPASSIONATE ABA THERAPY IN MISSISSAUGA</p>\n  <h1>Personalized ABA therapy that helps your child thrive.</h1>\n  <p>Play-based, evidence-driven behavioral therapy designed for children in Mississauga and surrounding communities. From early words to big social milestones, we walk alongside your family every step of the way.</p>\n  <p><em>★ Trusted by 250+ Mississauga &amp; GTA Families</em></p>\n</div>\n\n<!-- ================= SECTION 2: OUR APPROACH PREVIEW ================= -->\n<div class=\"aba-section-block\" data-section=\"approach\">\n  <p class=\"section-eyebrow\">OUR CLINICAL PHILOSOPHY</p>\n  <h2>Rooted in empathy, driven by science.</h2>\n  <p>We believe therapy is most effective when it feels natural, engaging, and joyful. Our naturalistic approach integrates your child’s favorite toys, routines, and everyday environments to foster genuine development.</p>\n  <h3>Key Clinical Pillars:</h3>\n  <ul>\n    <li><strong>1. Communication First:</strong> Functional vocal and augmentative communication skills.</li>\n    <li><strong>2. Social Connection:</strong> Meaningful relationships and joyful peer interactions.</li>\n    <li><strong>3. Independence &amp; Life Skills:</strong> Everyday routines that empower self-confidence.</li>\n  </ul>\n</div>\n\n<!-- ================= SECTION 3: CLINICAL SERVICES ================= -->\n<div class=\"aba-section-block\" data-section=\"services\">\n  <p class=\"section-eyebrow\">COMPREHENSIVE CARE</p>\n  <h2>Comprehensive ABA Therapy Services in Mississauga</h2>\n  <ul>\n    <li><strong>In-Home ABA Therapy:</strong> Personalized, one-on-one sessions in your family’s comfort zone.</li>\n    <li><strong>Parent Coaching:</strong> Hands-on coaching and practical tools to support your child at home.</li>\n    <li><strong>Early Intensive Intervention:</strong> Early developmental programs designed for ages 2–6.</li>\n    <li><strong>School &amp; Daycare Support:</strong> Facilitating smooth transitions, shadow support, and classroom skills.</li>\n  </ul>\n</div>\n\n<!-- ================= SECTION 4: WHY FAMILIES CHOOSE US ================= -->\n<div class=\"aba-section-block\" data-section=\"family-fit\">\n  <p class=\"section-eyebrow\">THE DIFFERENCE</p>\n  <h2>Care Thoughtfully Tailored Around Your Child</h2>\n  <p>No cookie-cutter plans. We craft unique programs that celebrate your child's distinct personality, interests, and developmental goals.</p>\n</div>\n\n<!-- ================= SECTION 5: HOW IT WORKS ================= -->\n<div class=\"aba-section-block\" data-section=\"process\">\n  <p class=\"section-eyebrow\">OUR PROCESS</p>\n  <h2>Your Family's 4-Step Journey</h2>\n  <ol>\n    <li><strong>Step 1: Free Consultation:</strong> Discuss your child’s needs and funding options with our clinical director.</li>\n    <li><strong>Step 2: Initial Clinical Assessment:</strong> Comprehensive VB-MAPP or ABLLS-R skill evaluation.</li>\n    <li><strong>Step 3: Individualized Plan:</strong> Customized goals targeting communication, behavior, and social milestones.</li>\n    <li><strong>Step 4: Ongoing Therapy &amp; Progress:</strong> Engaging sessions with transparent data tracking for parents.</li>\n  </ol>\n</div>\n\n<!-- ================= SECTION 6: FAQ ================= -->\n<div class=\"aba-section-block\" data-section=\"faq\">\n  <h2>Frequently Asked Questions</h2>\n  <p>Guidance on OAP funding, diagnosis requirements, age ranges, and individualized treatment plans.</p>\n</div>\n\n<!-- ================= SECTION 7: FINAL CALL TO ACTION BANNER ================= -->\n<div class=\"aba-section-block\" data-section=\"cta\">\n  <h2>Ready to take the next step?</h2>\n  <p>We're here to help your child grow, learn and thrive.</p>\n</div>",
         ],
         'about' => [
             'title'    => 'About Us',
@@ -524,8 +705,11 @@ function aba_setup_pages_and_options(bool $force = false): void {
                 '_aba_hero_eyebrow'  => $c['pages']['about']['eyebrow'] ?? 'ABOUT ABA THERAPY MISSISSAUGA',
                 '_aba_hero_title'    => $c['pages']['about']['title'] ?? 'Empowering children and families through compassionate care.',
                 '_aba_hero_subtitle' => $c['pages']['about']['subtitle'] ?? 'We believe every child possesses unique strengths, boundless potential, and the ability to thrive when surrounded by understanding and evidence-based support.',
+                '_aba_cta_title'     => $c['final_cta']['title'] ?? 'Ready to take the next step?',
+                '_aba_cta_desc'      => $c['final_cta']['description'] ?? "We're here to help your child grow, learn and thrive.",
+                '_aba_cta_primary'   => $c['final_cta']['primary'] ?? 'Book a Consultation',
             ],
-            'content'  => "<h1>Empowering children and families through compassionate care.</h1>\n\n<p>We believe every child possesses unique strengths, boundless potential, and the ability to thrive when surrounded by understanding and evidence-based support.</p>\n\n<h2>Our Story & Mission</h2>\n\n<p>Founded right here in Mississauga, our clinic was born from a simple belief: behavioral therapy should feel compassionate, joyful, and deeply personal. We recognized that families often faced impersonal, clinical environments that didn't reflect the warmth of real family life.</p>\n\n<p>Our multidisciplinary team of Board Certified Behavior Analysts (BCBAs) and dedicated therapists work in close partnership with parents. By integrating therapy into home, school, and community environments, we ensure that every skill your child learns is meaningful, functional, and enduring.</p>",
+            'content'  => "<!-- ================= SECTION 1: HERO BANNER ================= -->\n<h1>Empowering children and families through compassionate care.</h1>\n<p>We believe every child possesses unique strengths, boundless potential, and the ability to thrive when surrounded by understanding and evidence-based support.</p>\n\n<!-- ================= SECTION 2: OUR STORY & MISSION ================= -->\n<h2>Our Story &amp; Mission</h2>\n<p>Founded right here in Mississauga, our clinic was born from a simple belief: behavioral therapy should feel compassionate, joyful, and deeply personal. We recognized that families often faced impersonal, clinical environments that didn't reflect the warmth of real family life.</p>\n<p>Our multidisciplinary team of Board Certified Behavior Analysts (BCBAs) and dedicated therapists work in close partnership with parents. By integrating therapy into home, school, and community environments, we ensure that every skill your child learns is meaningful, functional, and enduring.</p>\n\n<!-- ================= SECTION 3: CORE CLINICAL VALUES ================= -->\n<h2>Our Core Values</h2>\n<ul>\n  <li><strong>Compassion First:</strong> Warm, play-based engagement that honors emotional well-being.</li>\n  <li><strong>Family-Centered:</strong> Parents as equal partners with continuous collaboration.</li>\n  <li><strong>Evidence-Based:</strong> Applied Behavior Analysis (ABA) backed by rigorous clinical science.</li>\n</ul>",
         ],
         'services' => [
             'title'    => 'Our Services',
@@ -535,8 +719,11 @@ function aba_setup_pages_and_options(bool $force = false): void {
                 '_aba_hero_eyebrow'  => $c['pages']['services']['eyebrow'] ?? 'COMPREHENSIVE SERVICES',
                 '_aba_hero_title'    => $c['pages']['services']['title'] ?? 'Evidence-based support tailored to your child\'s world.',
                 '_aba_hero_subtitle' => $c['pages']['services']['subtitle'] ?? 'Explore our full range of ABA therapy services designed to support communication, social connection, and daily living skills across every environment.',
+                '_aba_cta_title'     => $c['final_cta']['title'] ?? 'Ready to take the next step?',
+                '_aba_cta_desc'      => $c['final_cta']['description'] ?? "We're here to help your child grow, learn and thrive.",
+                '_aba_cta_primary'   => $c['final_cta']['primary'] ?? 'Book a Consultation',
             ],
-            'content'  => "<h1>Evidence-based support tailored to your child's world.</h1>\n\n<p>Explore our full range of ABA therapy services designed to support communication, social connection, and daily living skills across every environment.</p>\n\n<h2>Our Clinical Services</h2>\n\n<ul>\n<li><strong>In-Home Therapy:</strong> One-on-one sessions in your home environment.</li>\n<li><strong>Parent Coaching:</strong> Empowering parents with evidence-based strategies.</li>\n<li><strong>Early Intervention:</strong> Intensive, play-based support for toddlers and preschoolers.</li>\n<li><strong>School & Daycare Support:</strong> Assisting successful transitions into group settings.</li>\n<li><strong>Verbal Support:</strong> Functional communication and speech-language integration.</li>\n<li><strong>Assessments:</strong> Comprehensive VB-MAPP, ABLLS-R, and functional behavior assessments.</li>\n</ul>",
+            'content'  => "<!-- ================= SECTION 1: HERO BANNER ================= -->\n<h1>Evidence-based support tailored to your child's world.</h1>\n<p>Explore our full range of ABA therapy services designed to support communication, social connection, and daily living skills across every environment.</p>\n\n<!-- ================= SECTION 2: CLINICAL SERVICES CATALOG ================= -->\n<h2>Our Clinical Services</h2>\n<ul>\n  <li><strong>In-Home Therapy:</strong> One-on-one sessions in your home environment.</li>\n  <li><strong>Parent Coaching:</strong> Empowering parents with evidence-based strategies.</li>\n  <li><strong>Early Intervention:</strong> Intensive, play-based support for toddlers and preschoolers.</li>\n  <li><strong>School &amp; Daycare Support:</strong> Assisting successful transitions into group settings.</li>\n  <li><strong>Verbal Support:</strong> Functional communication and speech-language integration.</li>\n  <li><strong>Assessments:</strong> Comprehensive VB-MAPP, ABLLS-R, and functional behavior assessments.</li>\n</ul>",
         ],
         'our-approach' => [
             'title'    => 'Our Approach',
@@ -546,8 +733,11 @@ function aba_setup_pages_and_options(bool $force = false): void {
                 '_aba_hero_eyebrow'  => $c['pages']['our_approach']['eyebrow'] ?? 'OUR CLINICAL PHILOSOPHY',
                 '_aba_hero_title'    => $c['pages']['our_approach']['title'] ?? 'Every child. Unique potential. Limitless possibilities.',
                 '_aba_hero_subtitle' => $c['pages']['our_approach']['subtitle'] ?? 'Discover our child-centered, naturalistic methodology that turns science into everyday smiles and life-changing milestones.',
+                '_aba_cta_title'     => $c['final_cta']['title'] ?? 'Ready to take the next step?',
+                '_aba_cta_desc'      => $c['final_cta']['description'] ?? "We're here to help your child grow, learn and thrive.",
+                '_aba_cta_primary'   => $c['final_cta']['primary'] ?? 'Book a Consultation',
             ],
-            'content'  => "<h1>Every child. Unique potential. Limitless possibilities.</h1>\n\n<p>Discover our child-centered, naturalistic methodology that turns science into everyday smiles and life-changing milestones.</p>\n\n<h2>Core Clinical Pillars</h2>\n\n<ul>\n<li><strong>Communication:</strong> Building expressive and receptive skills for everyday life.</li>\n<li><strong>Social Skills:</strong> Connecting, sharing, and building positive relationships.</li>\n<li><strong>Daily Living Skills:</strong> Supporting independence in routines and self-care.</li>\n</ul>",
+            'content'  => "<!-- ================= SECTION 1: HERO BANNER ================= -->\n<h1>Every child. Unique potential. Limitless possibilities.</h1>\n<p>Discover our child-centered, naturalistic methodology that turns science into everyday smiles and life-changing milestones.</p>\n\n<!-- ================= SECTION 2: CORE CLINICAL PILLARS ================= -->\n<h2>Core Clinical Pillars</h2>\n<ul>\n  <li><strong>Communication:</strong> Building expressive and receptive skills for everyday life.</li>\n  <li><strong>Social Skills:</strong> Connecting, sharing, and building positive relationships.</li>\n  <li><strong>Daily Living Skills:</strong> Supporting independence in routines and self-care.</li>\n</ul>",
         ],
         'resources' => [
             'title'    => 'Parent Resources',
@@ -557,8 +747,11 @@ function aba_setup_pages_and_options(bool $force = false): void {
                 '_aba_hero_eyebrow'  => $c['pages']['resources']['eyebrow'] ?? 'PARENT RESOURCE HUB',
                 '_aba_hero_title'    => $c['pages']['resources']['title'] ?? 'Helpful information, guides & support for your family.',
                 '_aba_hero_subtitle' => $c['pages']['resources']['subtitle'] ?? 'Access our curated checklists, funding guides, and expert articles designed to help Ontario families navigate autism and developmental care.',
+                '_aba_cta_title'     => $c['final_cta']['title'] ?? 'Ready to take the next step?',
+                '_aba_cta_desc'      => $c['final_cta']['description'] ?? "We're here to help your child grow, learn and thrive.",
+                '_aba_cta_primary'   => $c['final_cta']['primary'] ?? 'Book a Consultation',
             ],
-            'content'  => "<h1>Helpful information, guides & support for your family.</h1>\n\n<p>Access our curated checklists, funding guides, and expert articles designed to help Ontario families navigate autism and developmental care.</p>\n\n<h2>Ontario Autism Program (OAP) & Funding Support</h2>\n\n<p>We assist families with OAP Childhood Budgets, Core Clinical Services, Special Services at Home (SSAH), and Disability Tax Credit (DTC) documentation.</p>",
+            'content'  => "<!-- ================= SECTION 1: HERO BANNER ================= -->\n<h1>Helpful information, guides &amp; support for your family.</h1>\n<p>Access our curated checklists, funding guides, and expert articles designed to help Ontario families navigate autism and developmental care.</p>\n\n<!-- ================= SECTION 2: OAP & FUNDING SUPPORT ================= -->\n<h2>Ontario Autism Program (OAP) &amp; Funding Support</h2>\n<p>We assist families with OAP Childhood Budgets, Core Clinical Services, Special Services at Home (SSAH), and Disability Tax Credit (DTC) documentation.</p>",
         ],
         'contact' => [
             'title'    => 'Contact Us',
@@ -572,8 +765,11 @@ function aba_setup_pages_and_options(bool $force = false): void {
                 '_aba_contact_email'  => $c['footer']['contact']['email'] ?? 'info@aba-therapy-mississauga.ca',
                 '_aba_contact_address'=> 'Mississauga, Ontario (Serving Peel & Halton Regions)',
                 '_aba_contact_hours'  => 'Monday – Friday: 8:00 AM – 6:30 PM | Saturday: 9:00 AM – 2:00 PM',
+                '_aba_cta_title'      => $c['final_cta']['title'] ?? 'Ready to take the next step?',
+                '_aba_cta_desc'       => $c['final_cta']['description'] ?? "We're here to help your child grow, learn and thrive.",
+                '_aba_cta_primary'    => $c['final_cta']['primary'] ?? 'Book a Consultation',
             ],
-            'content'  => "<h1>Begin your child's journey with confidence.</h1>\n\n<p>Reach out today to schedule a free, no-obligation consultation with our clinical team in Mississauga.</p>\n\n<h2>Office Information</h2>\n\n<p><strong>Phone:</strong> (905) 123-4567<br><strong>Email:</strong> info@aba-therapy-mississauga.ca<br><strong>Location:</strong> Mississauga, Ontario (Serving Peel & Halton Regions)<br><strong>Hours:</strong> Monday – Friday: 8:00 AM – 6:30 PM | Saturday: 9:00 AM – 2:00 PM</p>",
+            'content'  => "<!-- ================= SECTION 1: HERO BANNER ================= -->\n<h1>Begin your child's journey with confidence.</h1>\n<p>Reach out today to schedule a free, no-obligation consultation with our clinical team in Mississauga.</p>\n\n<!-- ================= SECTION 2: OFFICE INFORMATION ================= -->\n<h2>Office Information</h2>\n<p><strong>Phone:</strong> (905) 123-4567<br><strong>Email:</strong> info@aba-therapy-mississauga.ca<br><strong>Location:</strong> Mississauga, Ontario (Serving Peel & Halton Regions)<br><strong>Hours:</strong> Monday – Friday: 8:00 AM – 6:30 PM | Saturday: 9:00 AM – 2:00 PM</p>",
         ],
     ];
 
@@ -880,6 +1076,15 @@ function aba_render_page_hero(string $eyebrow, string $title, string $subtitle =
 
 function aba_render_cta_banner(string $title = '', string $description = '', string $primary = '', string $href = ''): void {
     $c = aba_load_content();
+    $post_id = function_exists('get_the_ID') ? get_the_ID() : 0;
+    if ($post_id) {
+        $meta_t = get_post_meta($post_id, '_aba_cta_title', true);
+        $meta_d = get_post_meta($post_id, '_aba_cta_desc', true);
+        $meta_p = get_post_meta($post_id, '_aba_cta_primary', true);
+        if (!empty($meta_t)) { $title = $meta_t; }
+        if (!empty($meta_d)) { $description = $meta_d; }
+        if (!empty($meta_p)) { $primary = $meta_p; }
+    }
     $title = $title ?: ($c['final_cta']['title'] ?? "Ready to take the next step?");
     $desc = $description ?: ($c['final_cta']['description'] ?? "We're here to help your child grow, learn and thrive.");
     $btn_label = $primary ?: ($c['final_cta']['primary'] ?? "Book a Consultation");

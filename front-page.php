@@ -20,6 +20,17 @@ $hero_eyebrow = ($post_id ? get_post_meta($post_id, '_aba_hero_eyebrow', true) :
 $hero_title = ($post_id ? get_post_meta($post_id, '_aba_hero_title', true) : '') ?: ($c['hero']['title'] ?? '');
 $hero_desc = ($post_id ? get_post_meta($post_id, '_aba_hero_subtitle', true) : '') ?: ($c['hero']['description'] ?? '');
 $hero_trust = ($post_id ? get_post_meta($post_id, '_aba_hero_trust', true) : '') ?: ($c['hero']['trust_text'] ?? '');
+
+$approach_eyebrow = ($post_id ? get_post_meta($post_id, '_aba_approach_eyebrow', true) : '') ?: ($c['approach']['eyebrow'] ?? '');
+$approach_title = ($post_id ? get_post_meta($post_id, '_aba_approach_title', true) : '') ?: ($c['approach']['title'] ?? '');
+$approach_desc = ($post_id ? get_post_meta($post_id, '_aba_approach_desc', true) : '') ?: ($c['approach']['description'] ?? '');
+
+$services_eyebrow = ($post_id ? get_post_meta($post_id, '_aba_services_eyebrow', true) : '') ?: ($c['services']['eyebrow'] ?? '');
+$services_title = ($post_id ? get_post_meta($post_id, '_aba_services_title', true) : '') ?: ($c['services']['title'] ?? '');
+
+$family_eyebrow = ($post_id ? get_post_meta($post_id, '_aba_family_fit_eyebrow', true) : '') ?: ($c['family_fit']['eyebrow'] ?? '');
+$family_title = ($post_id ? get_post_meta($post_id, '_aba_family_fit_title', true) : '') ?: ($c['family_fit']['title'] ?? '');
+$family_desc = ($post_id ? get_post_meta($post_id, '_aba_family_fit_desc', true) : '') ?: ($c['family_fit']['description'] ?? '');
 ?>
 
   <!-- HERO SECTION -->
@@ -63,9 +74,9 @@ $hero_trust = ($post_id ? get_post_meta($post_id, '_aba_hero_trust', true) : '')
         <span class="dot-field" aria-hidden="true"></span>
       </div>
       <div class="approach-copy reveal-slide-right">
-        <p class="eyebrow"><?php echo esc_html($c['approach']['eyebrow']); ?></p>
-        <h2><?php echo esc_html($c['approach']['title']); ?></h2>
-        <p><?php echo esc_html($c['approach']['description']); ?></p>
+        <p class="eyebrow"><?php echo esc_html($approach_eyebrow); ?></p>
+        <h2><?php echo esc_html($approach_title); ?></h2>
+        <p><?php echo esc_html($approach_desc); ?></p>
         <div style="margin-top: 24px;">
           <a class="service-link" href="<?php echo esc_url(aba_page_url('our-approach')); ?>" style="font-size: 16px; font-weight: 700;">
             <span>Learn More About Our Approach</span>
@@ -113,8 +124,8 @@ $hero_trust = ($post_id ? get_post_meta($post_id, '_aba_hero_trust', true) : '')
   <section class="services section" id="services">
     <div class="container services-grid">
       <div class="section-intro reveal-slide-left">
-        <p class="eyebrow"><?php echo esc_html($c['services']['eyebrow']); ?></p>
-        <h2><?php echo esc_html($c['services']['title']); ?></h2>
+        <p class="eyebrow"><?php echo esc_html($services_eyebrow); ?></p>
+        <h2><?php echo esc_html($services_title); ?></h2>
         <span class="scribble" aria-hidden="true"></span>
         <?php aba_button($c['services']['cta'], aba_page_url('services'), 'primary'); ?>
       </div>
@@ -148,9 +159,9 @@ $hero_trust = ($post_id ? get_post_meta($post_id, '_aba_hero_trust', true) : '')
   <section class="family-fit">
     <div class="container family-grid">
       <div class="family-copy reveal-slide-left">
-        <p class="eyebrow"><?php echo esc_html($c['family_fit']['eyebrow']); ?></p>
-        <h2><?php echo esc_html($c['family_fit']['title']); ?></h2>
-        <p><?php echo esc_html($c['family_fit']['description']); ?></p>
+        <p class="eyebrow"><?php echo esc_html($family_eyebrow); ?></p>
+        <h2><?php echo esc_html($family_title); ?></h2>
+        <p><?php echo esc_html($family_desc); ?></p>
         <span class="scribble yellow-line" aria-hidden="true"></span>
         <div style="margin-top: 24px;">
           <a class="service-link" href="<?php echo esc_url(aba_page_url('about')); ?>" style="font-size: 16px; font-weight: 700;">
