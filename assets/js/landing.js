@@ -87,38 +87,38 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // 4. Initial Page Load Reveal Sequence for Hero Section
-  setTimeout(function () {
-    const heroReveals = document.querySelectorAll(
-      '.hero .reveal-slide-left, .hero .reveal-slide-right, .hero .reveal-scale, .page-hero .reveal-fade-up, .page-hero .reveal-fade-in'
-    );
-    heroReveals.forEach(function (el) {
-      el.classList.add('is-revealed');
-    });
-  }, 100);
-
-  // 5. 3D Tilt Hover Motion & Spotlight Tracking for All Interactive Cards
-  const interactiveCards = document.querySelectorAll(
-    '.resource-card, .service-card, .value-card, .benefit-card, .funding-card, .consult-card, .who-card'
+  const heroReveals = document.querySelectorAll(
+    '.hero .reveal-slide-left, .hero .reveal-slide-right, .hero .reveal-scale, .page-hero .reveal-fade-up, .page-hero .reveal-fade-in'
   );
-  interactiveCards.forEach(function (card) {
-    card.addEventListener('mousemove', function (e) {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * -5;
-      const rotateY = ((x - centerX) / centerX) * 5;
-
-      card.style.setProperty('--mouse-x', x.toFixed(1) + 'px');
-      card.style.setProperty('--mouse-y', y.toFixed(1) + 'px');
-      card.style.transform = 'perspective(1000px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translate3d(0, -6px, 0)';
-    });
-
-    card.addEventListener('mouseleave', function () {
-      card.style.transform = '';
-    });
+  heroReveals.forEach(function (el) {
+    el.classList.add('is-revealed');
   });
+
+  // 5. 3D Tilt Hover Motion & Spotlight Tracking for All Interactive Cards (Desktop only)
+  if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+    const interactiveCards = document.querySelectorAll(
+      '.resource-card, .service-card, .value-card, .benefit-card, .funding-card, .consult-card, .who-card'
+    );
+    interactiveCards.forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -5;
+        const rotateY = ((x - centerX) / centerX) * 5;
+
+        card.style.setProperty('--mouse-x', x.toFixed(1) + 'px');
+        card.style.setProperty('--mouse-y', y.toFixed(1) + 'px');
+        card.style.transform = 'perspective(1000px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translate3d(0, -6px, 0)';
+      }, { passive: true });
+
+      card.addEventListener('mouseleave', function () {
+        card.style.transform = '';
+      });
+    });
+  }
 
   // 6. Interactive FAQ Accordion Logic (Shared across all pages)
   const faqButtons = document.querySelectorAll('.faq-item button');
