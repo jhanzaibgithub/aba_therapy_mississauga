@@ -29,7 +29,7 @@ $footer_services = $c['footer']['services'] ?? [
     <div class="footer-brand">
       <a class="brand" href="<?php echo esc_url($home_url); ?>" aria-label="<?php echo esc_attr($c['site']['brand_name']); ?> home">
         <?php if ($logo_url): ?>
-          <img class="brand-logo" src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($c['site']['brand_name']); ?>" width="190" height="42">
+          <img class="brand-logo" src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($c['site']['brand_name']); ?>" width="190" height="42" loading="lazy" decoding="async">
         <?php else: ?>
           <span class="brand-mark">✦</span>
           <span>

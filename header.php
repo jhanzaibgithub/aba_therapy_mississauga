@@ -310,7 +310,7 @@ $email_address = $c['footer']['contact']['email'] ?? 'info@abatherapy-mississaug
   <div class="container header-inner">
     <a class="brand" href="<?php echo esc_url($home_url); ?>" aria-label="<?php echo esc_attr($c['site']['brand_name']); ?> home">
       <?php if ($logo_url): ?>
-        <img class="brand-logo" src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($c['site']['brand_name'] . ' ' . $c['site']['brand_subtitle']); ?>" width="210" height="46">
+        <img class="brand-logo" src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($c['site']['brand_name'] . ' ' . $c['site']['brand_subtitle']); ?>" width="210" height="46" decoding="async" fetchpriority="high">
       <?php else: ?>
         <span class="brand-mark">✦</span>
         <span>
