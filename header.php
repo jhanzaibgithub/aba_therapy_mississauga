@@ -82,7 +82,18 @@ $email_address = $c['footer']['contact']['email'] ?? 'info@abatherapy-mississaug
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+
+  <!-- ======================================================================
+       PERFORMANCE OPTIMIZATIONS (PAGESPEED INSIGHTS / CORE WEB VITALS)
+       ====================================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <?php 
+  $hero_webp_url = esc_url(get_template_directory_uri() . '/assets/hero-child-therapist.webp');
+  if ($current_page === 'home'): ?>
+    <link rel="preload" as="image" type="image/webp" href="<?php echo $hero_webp_url; ?>" fetchpriority="high">
+  <?php endif; ?>
+
   <!-- ======================================================================
        PRIMARY SEO META TAGS (GOOGLE SEARCH OPTIMIZED)
        ====================================================================== -->

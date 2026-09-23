@@ -15,30 +15,39 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 350);
   }
 
-  // 1. Top Scroll Progress Bar
+  // 1. Top Scroll Progress Bar & 2. Sticky Header (Zero-reflow rAF controller)
   const progressBar = document.getElementById('scroll-progress');
-  function updateScrollProgress() {
-    if (!progressBar) return;
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    progressBar.style.width = scrollPercent.toFixed(2) + '%';
-  }
-  window.addEventListener('scroll', updateScrollProgress, { passive: true });
-  updateScrollProgress();
-
-  // 2. Sticky Header Shrink Controller
   const siteHeader = document.querySelector('.site-header');
-  function updateHeaderState() {
-    if (!siteHeader) return;
-    if (window.scrollY > 40) {
-      siteHeader.classList.add('is-scrolled');
-    } else {
-      siteHeader.classList.remove('is-scrolled');
+  let scrollTicking = false;
+
+  function handleScroll() {
+    if (!scrollTicking) {
+      window.requestAnimationFrame(function () {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        if (progressBar) {
+          const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          progressBar.style.width = scrollPercent.toFixed(2) + '%';
+        }
+        if (siteHeader) {
+          if (scrollTop > 40) {
+            siteHeader.classList.add('is-scrolled');
+          } else {
+            siteHeader.classList.remove('is-scrolled');
+          }
+        }
+        scrollTicking = false;
+      });
+      scrollTicking = true;
     }
   }
-  window.addEventListener('scroll', updateHeaderState, { passive: true });
-  updateHeaderState();
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  // Defer initial scroll measurement after critical first paint to prevent forced reflow
+  window.addEventListener('load', function () {
+    if ((window.scrollY || document.documentElement.scrollTop) > 0) {
+      handleScroll();
+    }
+  }, { once: true });
 
   // 3. Advanced Directional Intersection Observer Reveal Engine
   const revealElements = document.querySelectorAll(

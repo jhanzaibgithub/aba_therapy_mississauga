@@ -173,16 +173,48 @@ function aba_enqueue_assets(): void {
     $uri = get_template_directory_uri();
     $dir = get_template_directory();
 
-    $css_file = $dir . '/assets/css/landing.css';
-    $css_ver = file_exists($css_file) ? (string)filemtime($css_file) : '1.0.0';
-    $js_file = $dir . '/assets/js/landing.js';
-    $js_ver = file_exists($js_file) ? (string)filemtime($js_file) : '1.0.0';
+    $min_css = $dir . '/assets/css/landing.min.css';
+    $css_rel = file_exists($min_css) ? '/assets/css/landing.min.css' : '/assets/css/landing.css';
+    $css_file = $dir . $css_rel;
+    $css_ver = file_exists($css_file) ? (string)filemtime($css_file) : '1.3.1';
 
+    $js_file = $dir . '/assets/js/landing.js';
+    $js_ver = file_exists($js_file) ? (string)filemtime($js_file) : '1.3.1';
+
+    // Google Fonts - loaded non-render-blocking with display=swap
     wp_enqueue_style('aba-fonts', 'https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap', [], null);
-    wp_enqueue_style('aba-landing', $uri . '/assets/css/landing.css', ['aba-fonts'], $css_ver);
+
+    // Main Theme Stylesheet (Minified)
+    wp_enqueue_style('aba-landing', $uri . $css_rel, [], $css_ver);
+
+    // Main Theme JavaScript (Deferred)
     wp_enqueue_script('aba-landing', $uri . '/assets/js/landing.js', [], $js_ver, true);
 }
 add_action('wp_enqueue_scripts', 'aba_enqueue_assets');
+
+// Preconnect for Google Fonts
+add_action('wp_head', function(): void {
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+}, 1);
+
+// Non-blocking Google Fonts loading filter
+add_filter('style_loader_tag', function($html, $handle, $href, $media) {
+    if ($handle === 'aba-fonts') {
+        return '<link rel="preload" as="style" href="' . esc_url($href) . '">' . "\n" .
+               '<link rel="stylesheet" href="' . esc_url($href) . '" media="print" onload="this.media=\'all\'">' . "\n" .
+               '<noscript><link rel="stylesheet" href="' . esc_url($href) . '"></noscript>' . "\n";
+    }
+    return $html;
+}, 10, 4);
+
+// Defer landing.js to eliminate render-blocking JS
+add_filter('script_loader_tag', function($tag, $handle, $src) {
+    if ($handle === 'aba-landing') {
+        return '<script src="' . esc_url($src) . '" defer id="aba-landing-js"></script>' . "\n";
+    }
+    return $tag;
+}, 10, 3);
 
 // Safely flush rewrite rules & automatically create pages when theme is activated
 add_action('after_switch_theme', function(): void {
@@ -201,9 +233,9 @@ add_action('admin_init', function(): void {
     }
 
     $installed_ver = get_option('aba_theme_version', '');
-    if ($installed_ver !== '1.3.0') {
+    if ($installed_ver !== '1.3.1') {
         aba_setup_pages_and_options(true);
-        update_option('aba_theme_version', '1.3.0');
+        update_option('aba_theme_version', '1.3.1');
     }
 });
 
@@ -1151,13 +1183,39 @@ function aba_picture(array $content, string $key, string $alt, string $class = '
         return aba_placeholder($class, $alt);
     }
 
-    return sprintf(
-        '<img class="%s" src="%s" alt="%s" loading="%s" decoding="async">',
+    $size = @getimagesize($path);
+    $dim_attrs = '';
+    if ($size && !empty($size[0]) && !empty($size[1])) {
+        $dim_attrs = sprintf(' width="%d" height="%d"', (int)$size[0], (int)$size[1]);
+    }
+
+    $base_path = preg_replace('/\.(jpg|jpeg|png)$/i', '', $clean_relative);
+    $webp_relative = $base_path . '.webp';
+    $webp_file = get_template_directory() . '/' . $webp_relative;
+
+    $fetchpriority = $eager ? ' fetchpriority="high"' : '';
+    $loading = $eager ? 'eager' : 'lazy';
+
+    $img_tag = sprintf(
+        '<img class="%s" src="%s" alt="%s" loading="%s" decoding="async"%s%s>',
         esc_attr($class),
         aba_asset_url($content, $key),
         esc_attr($alt),
-        $eager ? 'eager' : 'lazy'
+        $loading,
+        $dim_attrs,
+        $fetchpriority
     );
+
+    if (file_exists($webp_file)) {
+        $webp_url = esc_url(get_template_directory_uri() . '/' . $webp_relative);
+        return sprintf(
+            '<picture><source srcset="%s" type="image/webp">%s</picture>',
+            $webp_url,
+            $img_tag
+        );
+    }
+
+    return $img_tag;
 }
 
 function aba_render_error(string $message): void {

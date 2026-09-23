@@ -3415,12 +3415,10 @@ main#main {
 
 @keyframes preloaderLogoFloat {
   0%, 100% {
-    transform: translateY(0px) scale(1);
-    box-shadow: 0 16px 42px rgba(54, 28, 75, 0.08), 0 2px 10px rgba(89, 32, 155, 0.05);
+    transform: translate3d(0, 0px, 0) scale(1);
   }
   50% {
-    transform: translateY(-5px) scale(1.018);
-    box-shadow: 0 24px 50px rgba(54, 28, 75, 0.12), 0 4px 16px rgba(89, 32, 155, 0.09);
+    transform: translate3d(0, -5px, 0) scale(1.018);
   }
 }
 
@@ -3428,7 +3426,7 @@ main#main {
 .preloader-shimmer {
   position: absolute;
   top: 0;
-  left: -150%;
+  left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(
@@ -3437,16 +3435,18 @@ main#main {
     rgba(255, 255, 255, 0.7) 50%,
     transparent 80%
   );
+  transform: translateX(-150%);
   animation: preloaderShimmer 2.8s infinite cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
+  will-change: transform;
 }
 
 @keyframes preloaderShimmer {
   0% {
-    left: -150%;
+    transform: translateX(-150%);
   }
   50%, 100% {
-    left: 150%;
+    transform: translateX(150%);
   }
 }
 
@@ -3475,23 +3475,23 @@ main#main {
   top: 0;
   left: 0;
   height: 100%;
-  width: 40%;
+  width: 100%;
   background: linear-gradient(90deg, var(--purple) 0%, var(--teal) 50%, var(--green) 100%);
   border-radius: 999px;
+  transform-origin: left center;
   animation: preloaderProgressTrack 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  will-change: transform;
 }
 
 @keyframes preloaderProgressTrack {
   0% {
-    left: -40%;
-    width: 30%;
+    transform: translateX(-100%) scaleX(0.3);
   }
   50% {
-    width: 60%;
+    transform: translateX(15%) scaleX(0.65);
   }
   100% {
-    left: 100%;
-    width: 30%;
+    transform: translateX(100%) scaleX(0.3);
   }
 }
 
