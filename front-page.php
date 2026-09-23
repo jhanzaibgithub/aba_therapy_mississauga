@@ -14,23 +14,29 @@ $phone = $c['global_ctas']['phone_href'] ?? 'tel:+19051234567';
 $pic = function (string $key, string $alt, string $class = '', bool $eager = false) use ($c) {
     return aba_picture($c, $key, $alt, $class, $eager);
 };
+
+$post_id = function_exists('get_the_ID') ? get_the_ID() : 0;
+$hero_eyebrow = ($post_id ? get_post_meta($post_id, '_aba_hero_eyebrow', true) : '') ?: ($c['hero']['eyebrow'] ?? '');
+$hero_title = ($post_id ? get_post_meta($post_id, '_aba_hero_title', true) : '') ?: ($c['hero']['title'] ?? '');
+$hero_desc = ($post_id ? get_post_meta($post_id, '_aba_hero_subtitle', true) : '') ?: ($c['hero']['description'] ?? '');
+$hero_trust = ($post_id ? get_post_meta($post_id, '_aba_hero_trust', true) : '') ?: ($c['hero']['trust_text'] ?? '');
 ?>
 
   <!-- HERO SECTION -->
   <section class="hero section">
     <div class="container hero-grid">
       <div class="hero-copy reveal-slide-left">
-        <p class="eyebrow"><?php echo esc_html($c['hero']['eyebrow']); ?></p>
-        <h1><?php echo esc_html($c['hero']['title']); ?></h1>
+        <p class="eyebrow"><?php echo esc_html($hero_eyebrow); ?></p>
+        <h1><?php echo esc_html($hero_title); ?></h1>
         <span class="scribble" aria-hidden="true"></span>
-        <p class="lede"><?php echo esc_html($c['hero']['description']); ?></p>
+        <p class="lede"><?php echo esc_html($hero_desc); ?></p>
         <div class="button-row">
           <?php aba_button($c['global_ctas']['primary'], aba_page_url('contact'), 'primary'); ?>
           <?php aba_button($c['global_ctas']['secondary'], aba_page_url('our-approach'), 'outline'); ?>
         </div>
         <p class="trust">
           <span aria-hidden="true">★</span>
-          <span><?php echo esc_html($c['hero']['trust_text']); ?></span>
+          <span><?php echo esc_html($hero_trust); ?></span>
         </p>
       </div>
       <div class="hero-visual reveal-slide-right">

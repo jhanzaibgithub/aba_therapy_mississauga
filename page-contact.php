@@ -9,6 +9,31 @@ $contact = $c['pages']['contact'] ?? [];
 $phone = $c['global_ctas']['phone_href'] ?? 'tel:+19051234567';
 $phone_display = $c['global_ctas']['phone_label'] ?? '(905) 123-4567';
 $email = $c['footer']['contact']['email'] ?? 'info@aba-therapy-mississauga.ca';
+$location = 'Mississauga, Ontario';
+$hours_1 = 'Monday – Friday: 8:00 AM – 6:30 PM';
+$hours_2 = 'Saturday: 9:00 AM – 2:00 PM';
+
+$post_id = function_exists('get_the_ID') ? get_the_ID() : 0;
+if ($post_id) {
+    $meta_phone = get_post_meta($post_id, '_aba_contact_phone', true);
+    if (!empty($meta_phone)) {
+        $phone_display = $meta_phone;
+        $phone = 'tel:' . preg_replace('/[^0-9+]/', '', $meta_phone);
+    }
+    $meta_email = get_post_meta($post_id, '_aba_contact_email', true);
+    if (!empty($meta_email)) {
+        $email = $meta_email;
+    }
+    $meta_addr = get_post_meta($post_id, '_aba_contact_address', true);
+    if (!empty($meta_addr)) {
+        $location = $meta_addr;
+    }
+    $meta_hrs = get_post_meta($post_id, '_aba_contact_hours', true);
+    if (!empty($meta_hrs)) {
+        $hours_1 = $meta_hrs;
+        $hours_2 = '';
+    }
+}
 
 $breadcrumbs = [
     ['label' => 'Home', 'href' => aba_page_url('home')],
@@ -42,7 +67,7 @@ aba_render_page_hero(
           <span class="icon purple" aria-hidden="true">📍</span>
           <div>
             <strong>Location &amp; Service Coverage</strong>
-            <p>Mississauga, Ontario</p>
+            <p><?php echo esc_html($location); ?></p>
             <small style="color: var(--text-muted); display: block; margin-top: 4px;">Serving Peel Region (Mississauga, Brampton) &amp; Halton Region (Oakville, Milton, Etobicoke)</small>
           </div>
         </div>
@@ -69,8 +94,8 @@ aba_render_page_hero(
           <span class="icon orange" aria-hidden="true">⏰</span>
           <div>
             <strong>Hours of Operation</strong>
-            <p>Monday – Friday: 8:00 AM – 6:30 PM</p>
-            <p>Saturday: 9:00 AM – 2:00 PM</p>
+            <p><?php echo esc_html($hours_1); ?></p>
+            <?php if (!empty($hours_2)): ?><p><?php echo esc_html($hours_2); ?></p><?php endif; ?>
           </div>
         </div>
       </div>

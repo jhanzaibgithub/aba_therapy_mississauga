@@ -200,8 +200,10 @@ add_action('admin_init', function(): void {
         exit;
     }
 
-    if (!get_option('aba_pages_auto_created')) {
+    $installed_ver = get_option('aba_theme_version', '');
+    if ($installed_ver !== '1.2.0') {
         aba_setup_pages_and_options(false);
+        update_option('aba_theme_version', '1.2.0');
     }
 });
 
@@ -215,8 +217,16 @@ add_action('admin_notices', function(): void {
     }
 });
 
-// Appearance -> Setup Theme Pages tool in WordPress Admin
+// Appearance -> Setup Theme Pages & Edit Website Content tools in WordPress Admin
 add_action('admin_menu', function(): void {
+    add_theme_page(
+        'Edit Website Content',
+        'Edit Website Content',
+        'manage_options',
+        'aba-theme-content',
+        'aba_render_theme_content_page'
+    );
+
     add_theme_page(
         'Setup Theme Pages',
         'Setup Theme Pages',
@@ -226,12 +236,12 @@ add_action('admin_menu', function(): void {
             if (isset($_POST['aba_run_setup'])) {
                 check_admin_referer('aba_setup_pages_nonce');
                 aba_setup_pages_and_options(true);
-                echo '<div class="notice notice-success"><p><strong>Success!</strong> All 6 website pages (Home, About Us, Services, Our Approach, Resources, Contact) are created and assigned to their custom templates.</p></div>';
+                echo '<div class="notice notice-success"><p><strong>Success!</strong> All 6 website pages (Home, About Us, Services, Our Approach, Resources, Contact) are created, populated with data, and assigned to custom templates.</p></div>';
             }
             ?>
             <div class="wrap">
                 <h1>ABA Therapy Mississauga - Automatic Page Setup</h1>
-                <p>This tool automatically creates all 6 website pages in your WordPress <strong>Pages</strong> menu, assigns their custom templates, sets the Home page as the Front Page, and configures clean URLs.</p>
+                <p>This tool automatically creates all 6 website pages in your WordPress <strong>Pages</strong> menu, populates them with their full headings and content, assigns their custom templates, sets Home as the Front Page, and configures clean URLs.</p>
                 <form method="post">
                     <?php wp_nonce_field('aba_setup_pages_nonce'); ?>
                     <input type="submit" name="aba_run_setup" class="button button-primary button-large" value="Generate / Update All Website Pages Now">
@@ -242,44 +252,328 @@ add_action('admin_menu', function(): void {
     );
 });
 
-/**
- * Automatically create all website pages and configure front page & permalinks in WordPress
- */
-function aba_setup_pages_and_options(bool $force = false): void {
-    if (!function_exists('wp_insert_post') || !function_exists('get_page_by_path')) {
+// Admin Panel for Editing All Website Content Under Appearance -> Edit Website Content
+function aba_render_theme_content_page(): void {
+    if (!current_user_can('manage_options')) {
         return;
     }
+
+    if (isset($_POST['aba_save_theme_content'])) {
+        check_admin_referer('aba_theme_content_nonce');
+        $custom = [
+            'site' => [
+                'brand_name' => sanitize_text_field($_POST['brand_name'] ?? 'ABA THERAPY'),
+                'brand_subtitle' => sanitize_text_field($_POST['brand_subtitle'] ?? 'MISSISSAUGA'),
+            ],
+            'global_ctas' => [
+                'primary' => sanitize_text_field($_POST['cta_primary'] ?? 'Book a Consultation'),
+                'secondary' => sanitize_text_field($_POST['cta_secondary'] ?? 'Explore Our Approach'),
+                'phone_label' => sanitize_text_field($_POST['phone_label'] ?? '(905) 123-4567'),
+                'phone_href' => sanitize_text_field($_POST['phone_href'] ?? 'tel:+19051234567'),
+            ],
+            'hero' => [
+                'eyebrow' => sanitize_text_field($_POST['hero_eyebrow'] ?? ''),
+                'title' => sanitize_text_field($_POST['hero_title'] ?? ''),
+                'description' => sanitize_textarea_field($_POST['hero_description'] ?? ''),
+                'trust_text' => sanitize_text_field($_POST['hero_trust_text'] ?? ''),
+            ],
+            'footer' => [
+                'contact' => [
+                    'phone' => sanitize_text_field($_POST['phone_label'] ?? '(905) 123-4567'),
+                    'email' => sanitize_email($_POST['contact_email'] ?? 'info@abatherapy-mississauga.ca'),
+                    'location' => sanitize_text_field($_POST['contact_location'] ?? 'Mississauga, Ontario'),
+                ],
+                'brand_description' => sanitize_textarea_field($_POST['footer_brand_desc'] ?? ''),
+            ],
+        ];
+
+        update_option('aba_theme_custom_content', $custom);
+        echo '<div class="notice notice-success is-dismissible"><p><strong>Website content updated successfully!</strong> Changes are live across all pages.</p></div>';
+    }
+
+    $c = aba_load_content();
+    ?>
+    <div class="wrap">
+        <h1>Edit Website Content &amp; Headings</h1>
+        <p>Edit global headings, phone numbers, emails, and hero copy below without needing Elementor. Everything updates live across the site.</p>
+        
+        <form method="post" style="max-width: 820px; background: #fff; padding: 25px 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-top: 15px;">
+            <?php wp_nonce_field('aba_theme_content_nonce'); ?>
+            
+            <h2 style="border-bottom: 2px solid #59209b; padding-bottom: 8px; color: #59209b;">📞 Contact Information &amp; Branding</h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="phone_label">Phone Number (Display)</label></th>
+                    <td><input name="phone_label" type="text" id="phone_label" value="<?php echo esc_attr($c['global_ctas']['phone_label'] ?? '(905) 123-4567'); ?>" class="regular-text"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="phone_href">Phone Number (Clickable Link)</label></th>
+                    <td><input name="phone_href" type="text" id="phone_href" value="<?php echo esc_attr($c['global_ctas']['phone_href'] ?? 'tel:+19051234567'); ?>" class="regular-text"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="contact_email">Email Address</label></th>
+                    <td><input name="contact_email" type="email" id="contact_email" value="<?php echo esc_attr($c['footer']['contact']['email'] ?? 'info@abatherapy-mississauga.ca'); ?>" class="regular-text"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="contact_location">Office Location</label></th>
+                    <td><input name="contact_location" type="text" id="contact_location" value="<?php echo esc_attr($c['footer']['contact']['location'] ?? 'Mississauga, Ontario'); ?>" class="regular-text"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="brand_name">Brand Name</label></th>
+                    <td><input name="brand_name" type="text" id="brand_name" value="<?php echo esc_attr($c['site']['brand_name'] ?? 'ABA THERAPY'); ?>" class="regular-text"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="brand_subtitle">Brand Subtitle</label></th>
+                    <td><input name="brand_subtitle" type="text" id="brand_subtitle" value="<?php echo esc_attr($c['site']['brand_subtitle'] ?? 'MISSISSAUGA'); ?>" class="regular-text"></td>
+                </tr>
+            </table>
+
+            <h2 style="border-bottom: 2px solid #59209b; padding-bottom: 8px; color: #59209b; margin-top: 35px;">🏠 Homepage Hero Section</h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="hero_eyebrow">Hero Tagline / Eyebrow</label></th>
+                    <td><input name="hero_eyebrow" type="text" id="hero_eyebrow" value="<?php echo esc_attr($c['hero']['eyebrow'] ?? ''); ?>" class="large-text"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="hero_title">Hero Main Heading</label></th>
+                    <td><input name="hero_title" type="text" id="hero_title" value="<?php echo esc_attr($c['hero']['title'] ?? ''); ?>" class="large-text"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="hero_description">Hero Description / Paragraph</label></th>
+                    <td><textarea name="hero_description" id="hero_description" rows="3" class="large-text"><?php echo esc_textarea($c['hero']['description'] ?? ''); ?></textarea></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="cta_primary">Primary Button Label</label></th>
+                    <td><input name="cta_primary" type="text" id="cta_primary" value="<?php echo esc_attr($c['global_ctas']['primary'] ?? 'Book a Consultation'); ?>" class="regular-text"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="cta_secondary">Secondary Button Label</label></th>
+                    <td><input name="cta_secondary" type="text" id="cta_secondary" value="<?php echo esc_attr($c['global_ctas']['secondary'] ?? 'Explore Our Approach'); ?>" class="regular-text"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="hero_trust_text">Trust Badge Text</label></th>
+                    <td><input name="hero_trust_text" type="text" id="hero_trust_text" value="<?php echo esc_attr($c['hero']['trust_text'] ?? ''); ?>" class="large-text"></td>
+                </tr>
+            </table>
+
+            <p class="submit" style="margin-top: 25px;">
+                <input type="submit" name="aba_save_theme_content" id="submit" class="button button-primary button-large" value="Save All Changes">
+            </p>
+        </form>
+    </div>
+    <?php
+}
+
+// Register Meta Box in WordPress Admin -> Pages -> Edit Page
+add_action('add_meta_boxes', function(): void {
+    add_meta_box(
+        'aba_page_headings_box',
+        '⭐ Page Headings & Banner Content (ABA Therapy Theme)',
+        'aba_render_page_headings_metabox',
+        'page',
+        'normal',
+        'high'
+    );
+});
+
+function aba_render_page_headings_metabox($post): void {
+    wp_nonce_field('aba_save_page_meta_nonce', 'aba_page_meta_nonce');
+    $c = aba_load_content();
+    $slug = $post->post_name ?: '';
+
+    $eyebrow = get_post_meta($post->ID, '_aba_hero_eyebrow', true);
+    $title = get_post_meta($post->ID, '_aba_hero_title', true);
+    $subtitle = get_post_meta($post->ID, '_aba_hero_subtitle', true);
+
+    if ($slug === 'home' || $slug === '') {
+        $eyebrow = $eyebrow !== '' ? $eyebrow : ($c['hero']['eyebrow'] ?? '');
+        $title = $title !== '' ? $title : ($c['hero']['title'] ?? '');
+        $subtitle = $subtitle !== '' ? $subtitle : ($c['hero']['description'] ?? '');
+        $trust_text = get_post_meta($post->ID, '_aba_hero_trust', true);
+        $trust_text = $trust_text !== '' ? $trust_text : ($c['hero']['trust_text'] ?? '');
+    } elseif (isset($c['pages'][$slug])) {
+        $eyebrow = $eyebrow !== '' ? $eyebrow : ($c['pages'][$slug]['eyebrow'] ?? '');
+        $title = $title !== '' ? $title : ($c['pages'][$slug]['title'] ?? '');
+        $subtitle = $subtitle !== '' ? $subtitle : ($c['pages'][$slug]['subtitle'] ?? '');
+    }
+    ?>
+    <div style="padding: 10px 0;">
+        <p style="font-size: 13px; color: #444; margin-bottom: 15px; background: #f0f6fc; padding: 10px 14px; border-left: 4px solid #59209b; border-radius: 4px;">
+            ✏️ <strong>Live Visual Headings &amp; Banners:</strong> Edit the main hero banner headings and text for this page below. When you click <strong>Update</strong>, these headings will update immediately on the website without needing Elementor.
+        </p>
+        
+        <p>
+            <label for="aba_hero_eyebrow" style="font-weight: 600; display: block; margin-bottom: 5px;">Hero Tagline / Eyebrow (Small Top Text):</label>
+            <input type="text" id="aba_hero_eyebrow" name="aba_hero_eyebrow" value="<?php echo esc_attr($eyebrow); ?>" class="widefat" style="padding: 8px 10px;">
+        </p>
+
+        <p>
+            <label for="aba_hero_title" style="font-weight: 600; display: block; margin-bottom: 5px;">Main Heading Title (H1):</label>
+            <input type="text" id="aba_hero_title" name="aba_hero_title" value="<?php echo esc_attr($title); ?>" class="widefat" style="padding: 8px 10px; font-size: 15px; font-weight: bold;">
+        </p>
+
+        <p>
+            <label for="aba_hero_subtitle" style="font-weight: 600; display: block; margin-bottom: 5px;">Subtitle / Description Paragraph:</label>
+            <textarea id="aba_hero_subtitle" name="aba_hero_subtitle" rows="3" class="widefat" style="padding: 8px 10px;"><?php echo esc_textarea($subtitle); ?></textarea>
+        </p>
+
+        <?php if ($slug === 'home' || $slug === ''): ?>
+            <p>
+                <label for="aba_hero_trust" style="font-weight: 600; display: block; margin-bottom: 5px;">Trust Badge Text (Under Buttons):</label>
+                <input type="text" id="aba_hero_trust" name="aba_hero_trust" value="<?php echo esc_attr($trust_text ?? ''); ?>" class="widefat" style="padding: 8px 10px;">
+            </p>
+        <?php endif; ?>
+
+        <?php if ($slug === 'contact'): 
+            $phone = get_post_meta($post->ID, '_aba_contact_phone', true) ?: ($c['global_ctas']['phone_label'] ?? '(905) 123-4567');
+            $email = get_post_meta($post->ID, '_aba_contact_email', true) ?: ($c['footer']['contact']['email'] ?? 'info@aba-therapy-mississauga.ca');
+            $address = get_post_meta($post->ID, '_aba_contact_address', true) ?: 'Mississauga, Ontario (Serving Peel & Halton Regions)';
+            $hours = get_post_meta($post->ID, '_aba_contact_hours', true) ?: 'Monday – Friday: 8:00 AM – 6:30 PM | Saturday: 9:00 AM – 2:00 PM';
+        ?>
+            <div style="margin-top: 25px; padding-top: 20px; border-top: 2px dashed #ddd;">
+                <h3 style="margin-top: 0; color: #59209b;">📞 Direct Contact Details for Contact Page</h3>
+                <p>
+                    <label for="aba_contact_phone" style="font-weight: 600; display: block; margin-bottom: 5px;">Phone Number (Display):</label>
+                    <input type="text" id="aba_contact_phone" name="aba_contact_phone" value="<?php echo esc_attr($phone); ?>" class="widefat" style="padding: 8px 10px;">
+                </p>
+                <p>
+                    <label for="aba_contact_email" style="font-weight: 600; display: block; margin-bottom: 5px;">Email Address:</label>
+                    <input type="email" id="aba_contact_email" name="aba_contact_email" value="<?php echo esc_attr($email); ?>" class="widefat" style="padding: 8px 10px;">
+                </p>
+                <p>
+                    <label for="aba_contact_address" style="font-weight: 600; display: block; margin-bottom: 5px;">Location / Service Area:</label>
+                    <input type="text" id="aba_contact_address" name="aba_contact_address" value="<?php echo esc_attr($address); ?>" class="widefat" style="padding: 8px 10px;">
+                </p>
+                <p>
+                    <label for="aba_contact_hours" style="font-weight: 600; display: block; margin-bottom: 5px;">Office Hours:</label>
+                    <input type="text" id="aba_contact_hours" name="aba_contact_hours" value="<?php echo esc_attr($hours); ?>" class="widefat" style="padding: 8px 10px;">
+                </p>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php
+}
+
+add_action('save_post_page', function($post_id): void {
+    if (!isset($_POST['aba_page_meta_nonce']) || !wp_verify_nonce($_POST['aba_page_meta_nonce'], 'aba_save_page_meta_nonce')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (!current_user_can('edit_page', $post_id)) {
+        return;
+    }
+
+    if (isset($_POST['aba_hero_eyebrow'])) {
+        update_post_meta($post_id, '_aba_hero_eyebrow', sanitize_text_field($_POST['aba_hero_eyebrow']));
+    }
+    if (isset($_POST['aba_hero_title'])) {
+        update_post_meta($post_id, '_aba_hero_title', sanitize_text_field($_POST['aba_hero_title']));
+    }
+    if (isset($_POST['aba_hero_subtitle'])) {
+        update_post_meta($post_id, '_aba_hero_subtitle', sanitize_textarea_field($_POST['aba_hero_subtitle']));
+    }
+    if (isset($_POST['aba_hero_trust'])) {
+        update_post_meta($post_id, '_aba_hero_trust', sanitize_text_field($_POST['aba_hero_trust']));
+    }
+    if (isset($_POST['aba_contact_phone'])) {
+        update_post_meta($post_id, '_aba_contact_phone', sanitize_text_field($_POST['aba_contact_phone']));
+    }
+    if (isset($_POST['aba_contact_email'])) {
+        update_post_meta($post_id, '_aba_contact_email', sanitize_email($_POST['aba_contact_email']));
+    }
+    if (isset($_POST['aba_contact_address'])) {
+        update_post_meta($post_id, '_aba_contact_address', sanitize_text_field($_POST['aba_contact_address']));
+    }
+    if (isset($_POST['aba_contact_hours'])) {
+        update_post_meta($post_id, '_aba_contact_hours', sanitize_text_field($_POST['aba_contact_hours']));
+    }
+});
+
+/**
+ * Automatically create all website pages and configure front page, permalinks & content in WordPress
+ */
+function aba_setup_pages_and_options(bool $force = false): void {
+    if (!function_exists('wp_insert_post')) {
+        return;
+    }
+
+    $c = aba_load_content();
 
     $pages = [
         'home' => [
             'title'    => 'Home',
             'slug'     => 'home',
             'template' => 'front-page.php',
+            'meta'     => [
+                '_aba_hero_eyebrow' => $c['hero']['eyebrow'] ?? 'COMPASSIONATE. PERSONALIZED. PURPOSEFUL.',
+                '_aba_hero_title'   => $c['hero']['title'] ?? 'Helping children grow with confidence.',
+                '_aba_hero_subtitle'=> $c['hero']['description'] ?? 'Individualized ABA therapy designed around your child, your family, and everyday life.',
+                '_aba_btn_primary'  => $c['global_ctas']['primary'] ?? 'Book a Consultation',
+                '_aba_btn_secondary'=> $c['global_ctas']['secondary'] ?? 'Explore Our Approach',
+                '_aba_trust_text'   => $c['hero']['trust_text'] ?? 'Trusted by families across Mississauga and surrounding communities.',
+            ],
+            'content'  => "<h1>Helping children grow with confidence.</h1>\n\n<p>Individualized ABA therapy designed around your child, your family, and everyday life.</p>\n\n<h2>Compassionate, In-Home & Clinical ABA Therapy in Mississauga</h2>\n\n<p>Our evidence-based programs are customized for children with autism and developmental delays. We focus on communication, daily living skills, and joyful social interactions.</p>",
         ],
         'about' => [
             'title'    => 'About Us',
             'slug'     => 'about',
             'template' => 'page-about.php',
+            'meta'     => [
+                '_aba_hero_eyebrow'  => $c['pages']['about']['eyebrow'] ?? 'ABOUT ABA THERAPY MISSISSAUGA',
+                '_aba_hero_title'    => $c['pages']['about']['title'] ?? 'Empowering children and families through compassionate care.',
+                '_aba_hero_subtitle' => $c['pages']['about']['subtitle'] ?? 'We believe every child possesses unique strengths, boundless potential, and the ability to thrive when surrounded by understanding and evidence-based support.',
+            ],
+            'content'  => "<h1>Empowering children and families through compassionate care.</h1>\n\n<p>We believe every child possesses unique strengths, boundless potential, and the ability to thrive when surrounded by understanding and evidence-based support.</p>\n\n<h2>Our Story & Mission</h2>\n\n<p>Founded right here in Mississauga, our clinic was born from a simple belief: behavioral therapy should feel compassionate, joyful, and deeply personal. We recognized that families often faced impersonal, clinical environments that didn't reflect the warmth of real family life.</p>\n\n<p>Our multidisciplinary team of Board Certified Behavior Analysts (BCBAs) and dedicated therapists work in close partnership with parents. By integrating therapy into home, school, and community environments, we ensure that every skill your child learns is meaningful, functional, and enduring.</p>",
         ],
         'services' => [
             'title'    => 'Our Services',
             'slug'     => 'services',
             'template' => 'page-services.php',
+            'meta'     => [
+                '_aba_hero_eyebrow'  => $c['pages']['services']['eyebrow'] ?? 'COMPREHENSIVE SERVICES',
+                '_aba_hero_title'    => $c['pages']['services']['title'] ?? 'Evidence-based support tailored to your child\'s world.',
+                '_aba_hero_subtitle' => $c['pages']['services']['subtitle'] ?? 'Explore our full range of ABA therapy services designed to support communication, social connection, and daily living skills across every environment.',
+            ],
+            'content'  => "<h1>Evidence-based support tailored to your child's world.</h1>\n\n<p>Explore our full range of ABA therapy services designed to support communication, social connection, and daily living skills across every environment.</p>\n\n<h2>Our Clinical Services</h2>\n\n<ul>\n<li><strong>In-Home Therapy:</strong> One-on-one sessions in your home environment.</li>\n<li><strong>Parent Coaching:</strong> Empowering parents with evidence-based strategies.</li>\n<li><strong>Early Intervention:</strong> Intensive, play-based support for toddlers and preschoolers.</li>\n<li><strong>School & Daycare Support:</strong> Assisting successful transitions into group settings.</li>\n<li><strong>Verbal Support:</strong> Functional communication and speech-language integration.</li>\n<li><strong>Assessments:</strong> Comprehensive VB-MAPP, ABLLS-R, and functional behavior assessments.</li>\n</ul>",
         ],
         'our-approach' => [
             'title'    => 'Our Approach',
             'slug'     => 'our-approach',
             'template' => 'page-our-approach.php',
+            'meta'     => [
+                '_aba_hero_eyebrow'  => $c['pages']['our_approach']['eyebrow'] ?? 'OUR CLINICAL PHILOSOPHY',
+                '_aba_hero_title'    => $c['pages']['our_approach']['title'] ?? 'Every child. Unique potential. Limitless possibilities.',
+                '_aba_hero_subtitle' => $c['pages']['our_approach']['subtitle'] ?? 'Discover our child-centered, naturalistic methodology that turns science into everyday smiles and life-changing milestones.',
+            ],
+            'content'  => "<h1>Every child. Unique potential. Limitless possibilities.</h1>\n\n<p>Discover our child-centered, naturalistic methodology that turns science into everyday smiles and life-changing milestones.</p>\n\n<h2>Core Clinical Pillars</h2>\n\n<ul>\n<li><strong>Communication:</strong> Building expressive and receptive skills for everyday life.</li>\n<li><strong>Social Skills:</strong> Connecting, sharing, and building positive relationships.</li>\n<li><strong>Daily Living Skills:</strong> Supporting independence in routines and self-care.</li>\n</ul>",
         ],
         'resources' => [
             'title'    => 'Parent Resources',
             'slug'     => 'resources',
             'template' => 'page-resources.php',
+            'meta'     => [
+                '_aba_hero_eyebrow'  => $c['pages']['resources']['eyebrow'] ?? 'PARENT RESOURCE HUB',
+                '_aba_hero_title'    => $c['pages']['resources']['title'] ?? 'Helpful information, guides & support for your family.',
+                '_aba_hero_subtitle' => $c['pages']['resources']['subtitle'] ?? 'Access our curated checklists, funding guides, and expert articles designed to help Ontario families navigate autism and developmental care.',
+            ],
+            'content'  => "<h1>Helpful information, guides & support for your family.</h1>\n\n<p>Access our curated checklists, funding guides, and expert articles designed to help Ontario families navigate autism and developmental care.</p>\n\n<h2>Ontario Autism Program (OAP) & Funding Support</h2>\n\n<p>We assist families with OAP Childhood Budgets, Core Clinical Services, Special Services at Home (SSAH), and Disability Tax Credit (DTC) documentation.</p>",
         ],
         'contact' => [
             'title'    => 'Contact Us',
             'slug'     => 'contact',
             'template' => 'page-contact.php',
+            'meta'     => [
+                '_aba_hero_eyebrow'   => $c['pages']['contact']['eyebrow'] ?? 'LET\'S CONNECT',
+                '_aba_hero_title'     => $c['pages']['contact']['title'] ?? 'Begin your child\'s journey with confidence.',
+                '_aba_hero_subtitle'  => $c['pages']['contact']['subtitle'] ?? 'Reach out today to schedule a free, no-obligation consultation with our clinical team in Mississauga.',
+                '_aba_contact_phone'  => $c['global_ctas']['phone_label'] ?? '(905) 123-4567',
+                '_aba_contact_email'  => $c['footer']['contact']['email'] ?? 'info@aba-therapy-mississauga.ca',
+                '_aba_contact_address'=> 'Mississauga, Ontario (Serving Peel & Halton Regions)',
+                '_aba_contact_hours'  => 'Monday – Friday: 8:00 AM – 6:30 PM | Saturday: 9:00 AM – 2:00 PM',
+            ],
+            'content'  => "<h1>Begin your child's journey with confidence.</h1>\n\n<p>Reach out today to schedule a free, no-obligation consultation with our clinical team in Mississauga.</p>\n\n<h2>Office Information</h2>\n\n<p><strong>Phone:</strong> (905) 123-4567<br><strong>Email:</strong> info@aba-therapy-mississauga.ca<br><strong>Location:</strong> Mississauga, Ontario (Serving Peel & Halton Regions)<br><strong>Hours:</strong> Monday – Friday: 8:00 AM – 6:30 PM | Saturday: 9:00 AM – 2:00 PM</p>",
         ],
     ];
 
@@ -301,6 +595,7 @@ function aba_setup_pages_and_options(bool $force = false): void {
                 $existing = $found[0];
             }
         }
+
         if (!$existing) {
             $page_id = wp_insert_post([
                 'post_title'     => $p['title'],
@@ -309,22 +604,41 @@ function aba_setup_pages_and_options(bool $force = false): void {
                 'post_type'      => 'page',
                 'comment_status' => 'closed',
                 'ping_status'    => 'closed',
-                'post_content'   => '',
+                'post_content'   => $p['content'],
             ]);
             if ($page_id && !is_wp_error($page_id)) {
                 if (!empty($p['template'])) {
                     update_post_meta($page_id, '_wp_page_template', $p['template']);
+                }
+                if (!empty($p['meta'])) {
+                    foreach ($p['meta'] as $m_key => $m_val) {
+                        update_post_meta($page_id, $m_key, $m_val);
+                    }
                 }
                 if ($key === 'home') {
                     $home_id = $page_id;
                 }
             }
         } else {
+            $page_id = $existing->ID;
+            if ($force || empty($existing->post_content)) {
+                wp_update_post([
+                    'ID'           => $page_id,
+                    'post_content' => $p['content'],
+                ]);
+            }
             if (!empty($p['template'])) {
-                update_post_meta($existing->ID, '_wp_page_template', $p['template']);
+                update_post_meta($page_id, '_wp_page_template', $p['template']);
+            }
+            if (!empty($p['meta'])) {
+                foreach ($p['meta'] as $m_key => $m_val) {
+                    if ($force || !get_post_meta($page_id, $m_key, true)) {
+                        update_post_meta($page_id, $m_key, $m_val);
+                    }
+                }
             }
             if ($key === 'home') {
-                $home_id = $existing->ID;
+                $home_id = $page_id;
             }
         }
     }
@@ -369,7 +683,7 @@ add_filter('template_include', function($template) {
     return $template;
 });
 
-// JSON Content Loader
+// JSON Content Loader (with Live WordPress Admin Customizations)
 function aba_load_content(): array {
     static $content = null;
     if (is_array($content)) { return $content; }
@@ -391,6 +705,14 @@ function aba_load_content(): array {
             $message .= ' Error: ' . json_last_error_msg();
         }
         return ['_error' => $message];
+    }
+
+    // Merge any custom content saved from WordPress Admin Theme Options
+    if (function_exists('get_option')) {
+        $custom_content = get_option('aba_theme_custom_content');
+        if (is_array($custom_content) && !empty($custom_content)) {
+            $decoded = array_replace_recursive($decoded, $custom_content);
+        }
     }
 
     $required_keys = [
@@ -509,6 +831,20 @@ function aba_button(string $label, string $href = '#contact', string $style = 'p
 }
 
 function aba_render_page_hero(string $eyebrow, string $title, string $subtitle = '', array $breadcrumbs = []): void {
+    if (function_exists('get_the_ID') && get_the_ID()) {
+        $meta_eyebrow = get_post_meta(get_the_ID(), '_aba_hero_eyebrow', true);
+        $meta_title = get_post_meta(get_the_ID(), '_aba_hero_title', true);
+        $meta_sub = get_post_meta(get_the_ID(), '_aba_hero_subtitle', true);
+        if ($meta_eyebrow !== '' && $meta_eyebrow !== false) {
+            $eyebrow = $meta_eyebrow;
+        }
+        if ($meta_title !== '' && $meta_title !== false) {
+            $title = $meta_title;
+        }
+        if ($meta_sub !== '' && $meta_sub !== false) {
+            $subtitle = $meta_sub;
+        }
+    }
     ?>
     <section class="page-hero section">
       <div class="container page-hero-inner">
